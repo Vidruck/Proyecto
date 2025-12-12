@@ -1,0 +1,174 @@
+:root {
+    /* --- VARIABLES BASE (MODO CLARO / LIGHT) --- */
+    --adwaita-blue: #3584e4;
+    --adwaita-blue-dark: #1c71d8;
+
+    /* Fondos y Textos (Default Light) */
+    --bg-color: #fafafa;
+    --card-bg: #ffffff;
+    --text-color: #2e3436;
+    --text-muted: #888a85;
+    --border-color: #deddda;
+
+    /* Inputs */
+    --input-bg: #f6f5f4;
+    --input-text: #2e3436;
+    --input-focus-shadow: rgba(53, 132, 228, 0.2);
+
+    /* Errores */
+    --error-color: #ed333b;
+
+    /* IPN Colors */
+    --ipn-guinda: #6c1d45;
+}
+
+/* --- DETECCIÓN AUTOMÁTICA Y MANUAL DE MODO OSCURO --- */
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Redefinimos los colores para Adwaita Dark */
+        --bg-color: #242424;
+        /* Gris muy oscuro, típico de GNOME */
+        --card-bg: #303030;
+        /* Tarjetas un poco más claras */
+        --text-color: #ffffff;
+        /* Texto blanco */
+        --text-muted: #c0bfbc;
+        /* Texto secundario gris claro */
+        --border-color: #454545;
+        /* Bordes oscuros sutiles */
+
+        /* Inputs Dark */
+        --input-bg: #383838;
+        --input-text: #ffffff;
+        --input-focus-shadow: rgba(53, 132, 228, 0.4);
+
+        /* IPN Colors Dark Mode */
+        --ipn-guinda: #ffccd5;
+    }
+}
+
+/* Soporte para cambio manual (Bootstrap o clase custom) */
+[data-bs-theme="dark"],
+.dark-mode {
+    --bg-color: #242424;
+    --card-bg: #303030;
+    --text-color: #ffffff;
+    --text-muted: #c0bfbc;
+    --border-color: #454545;
+    --input-bg: #383838;
+    --input-text: #ffffff;
+    --input-focus-shadow: rgba(53, 132, 228, 0.4);
+    --ipn-guinda: #ffccd5;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Transición suave al cambiar de modo */
+}
+
+/* Override Bootstrap labels */
+.form-label,
+label {
+    color: var(--text-color);
+}
+
+/* Tarjeta estilo Adwaita */
+.card-custom {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    /* Sombra un poco más marcada */
+    overflow: hidden;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Cabecera */
+.card-header-custom {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    padding: 20px 20px 0 20px;
+    text-align: center;
+    border-bottom: none;
+}
+
+.card-header-custom h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--text-color);
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+    /* Forzamos el color muted de nuestra variable */
+}
+
+/* Inputs reactivos al tema */
+.form-control {
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid transparent;
+    /* Sin borde por defecto estilo Adwaita */
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+/* Fix para que el texto dentro del input no se pierda en modo oscuro */
+.form-control::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+.form-control:focus {
+    background-color: var(--card-bg);
+    /* Al enfocar se pone del color de la tarjeta */
+    border-color: var(--adwaita-blue);
+    box-shadow: 0 0 0 3px var(--input-focus-shadow);
+    color: var(--text-color);
+}
+
+/* Botones */
+.btn-ipn {
+    background-color: var(--adwaita-blue);
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px 20px;
+    border: none;
+}
+
+.btn-ipn:hover {
+    background-color: var(--adwaita-blue-dark);
+    color: white;
+}
+
+/* Enlaces */
+a {
+    color: var(--adwaita-blue);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Validaciones */
+.form-label.required::after {
+    content: " *";
+    color: var(--error-color);
+}
+
+.invalid-feedback {
+    color: var(--error-color);
+    font-size: 0.85em;
+}

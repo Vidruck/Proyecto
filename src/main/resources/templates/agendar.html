@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Agendar Cita</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Agendar Nueva Cita</h3>
+        </div>
+        <div class="card-body">
+
+            <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show">
+                <strong th:text="${mensajeExito}"></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <form action="/citas/agendar" method="get" class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label">Servicio</label>
+                    <select name="idServicio" class="form-select" onchange="this.form.submit()">
+                        <option value="" disabled selected>Selecciona un servicio...</option>
+                        <option th:each="s : ${servicios}"
+                                th:value="${s.id}"
+                                th:text="${s.nombre}"
+                                th:selected="${citaDto.idServicio == s.id}"></option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Fecha</label>
+                    <input type="date" name="fecha" class="form-control"
+                           th:value="${citaDto.fecha}"
+                           onchange="this.form.submit()">
+                </div>
+            </form>
+
+            <hr>
+
+            <div th:if="${busquedaRealizada}">
+                <h5 class="mb-3">Horarios Disponibles para el <span th:text="${citaDto.fecha}"></span>:</h5>
+
+                <div th:if="${horariosLibres.empty}" class="alert alert-warning">
+                    No hay cupos disponibles para esta fecha. Intenta otro día.
+                </div>
+
+                <div class="row g-2">
+                    <div class="col-auto" th:each="hora : ${horariosLibres}">
+                        <form action="/citas/guardar" method="post">
+                            <input type="hidden" name="idServicio" th:value="${citaDto.idServicio}">
+                            <input type="hidden" name="fecha" th:value="${citaDto.fecha}">
+                            <input type="hidden" name="hora" th:value="${hora}">
+
+                            <button type="submit" class="btn btn-outline-success">
+                                <span th:text="${hora}">09:00</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div th:unless="${busquedaRealizada}" class="text-center text-muted py-4">
+                <p>Selecciona un servicio y una fecha para ver la disponibilidad.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
