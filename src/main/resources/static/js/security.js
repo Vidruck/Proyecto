@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const form = event.target;
             const passwordInput = form.querySelector('input[name="password"]');
 
-            // Validación básica: si no hay password (o campo vacío), dejamos que el backend decida
+            // Si no hay password (o campo vacío), dejamos que el backend decida
             if (!passwordInput || !passwordInput.value) {
                 form.submit();
                 return;

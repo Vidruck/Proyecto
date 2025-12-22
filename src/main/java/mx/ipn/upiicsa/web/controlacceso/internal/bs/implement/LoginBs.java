@@ -10,8 +10,6 @@ import mx.ipn.upiicsa.web.controlacceso.internal.input.LoginService;
 import mx.ipn.upiicsa.web.controlacceso.internal.output.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-// Importaciones nuevas para la criptografía
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -31,7 +29,7 @@ public class LoginBs implements LoginService {
         // 1. Encriptamos la contraseña que viene del formulario ANTES de buscar en la BD
         String passwordHash = encriptarPassword(loginDto.getPassword());
 
-        // 2. Buscamos usando el hash, no el texto plano
+        // 2. Se  busca usando el hash, no el texto plano
         var resultadoLogin = loginRepository.findByLoginAndPassword(loginDto.getUsername(), passwordHash);
 
         Either<Integer, Persona> resultado;
