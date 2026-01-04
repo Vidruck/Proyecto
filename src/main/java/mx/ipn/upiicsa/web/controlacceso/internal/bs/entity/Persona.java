@@ -1,5 +1,8 @@
 package mx.ipn.upiicsa.web.controlacceso.internal.bs.entity;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +13,8 @@ import java.time.LocalDate;
 @Setter
 @Getter
 public class Persona {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer idGenero;
     private String nombre;
