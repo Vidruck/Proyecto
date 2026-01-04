@@ -14,9 +14,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "tca01_persona")
 public class PersonaJpa {
-    @Id
-    @SequenceGenerator(name = "tca01_persona_id_persona_seq", sequenceName = "tca01_persona_id_persona_seq", allocationSize = 1)
-    @GeneratedValue(generator = "tca01_persona_id_persona_seq", strategy = GenerationType.SEQUENCE)
+  @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_persona")
     private Integer id;
     @Column(name = "fk_id_genero")

@@ -65,7 +65,6 @@ public class LoginController {
     @GetMapping("/signin")
     public String signin(Model model) {
         model.addAttribute("signinDto", SigninDto.builder().build());
-        model.addAttribute("listaGeneros",loginService.getGeneros());
         return "signin";
     }
 
@@ -81,7 +80,6 @@ public class LoginController {
             redirectAttributes.addFlashAttribute("mensajeExito", "¡Cuenta creada exítosamente! Por favor inicia Sesión.");
             return "redirect:/";
         } else {
-            model.addAttribute("listaGeneros",loginService.getGeneros());
             resultado = "signin";
         }
         return resultado;

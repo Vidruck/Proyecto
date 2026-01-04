@@ -60,11 +60,9 @@
                                 <label class="form-label required fw-bold">Género</label>
 
                                 <select class="form-select" th:field="*{idGenero}" th:errorclass="is-invalid">
-                                    <option value="" selected>Seleccione una opción...</option>
-                                    <option th:each="genero : ${listaGeneros}"
-                                            th:value="${genero.id}"
-                                            th:text="${genero.descripcion}">
-                                    </option>
+                                    <option value="" selected>Seleccione...</option>
+                                    <option value="0">Hombre</option>
+                                    <option value="1">Mujer</option>
                                 </select>
 
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('idGenero')}" th:errors="*{idGenero}"></div>
