@@ -47,16 +47,8 @@
                         <div class="mb-4">
                             <label class="form-label fw-bold">Contraseña</label>
                             <div class="input-group">
-                                <input type="password"
-                                       class="form-control"
-                                       name="password"
-                                       id="loginPassword"
-                                       th:field="*{password}"
-                                       placeholder="••••••••"
-                                       th:errorclass="is-invalid"/>
-                                <button type="button" class="btn btn-outline-secondary btn-toggle-password" data-target="loginPassword">
-                                    👁️
-                                </button>
+                                <input type="password" class="form-control" name="password" id="loginPassword" th:field="*{password}" placeholder="••••••••" th:errorclass="is-invalid"/>
+                                <button type="button" class="btn btn-outline-secondary btn-toggle-password" data-target="loginPassword">👁️</button>
                             </div>
                             <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                         </div>

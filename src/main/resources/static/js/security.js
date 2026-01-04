@@ -46,6 +46,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error("Error crítico de seguridad:", error);
                 alert("Error de seguridad al procesar los datos. Intente nuevamente.");
             }
+            const toggleButtons = document.querySelectorAll('.btn-toggle-password');
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const targetId = this.getAttribute('data-target');
+                    const input = document.getElementById(targetId);
+
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        this.textContent = '🙈';
+                    } else {
+                        input.type = 'password';
+                        this.textContent = '👁️';
+                    }
+                });
+            });
         });
     }
 });
