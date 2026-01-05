@@ -1,6 +1,9 @@
 CREATE TABLE cca01_genero (id_genero int4 NOT NULL, tx_nombre varchar(50) NOT NULL, tx_descripcion varchar(255) NOT NULL, st_activo bool NOT NULL, PRIMARY KEY (id_genero));
 CREATE TABLE cca02_rol (id_rol int4 NOT NULL, tx_nombre varchar(50) NOT NULL, tx_descripcion varchar(255) NOT NULL, st_activo bool NOT NULL, PRIMARY KEY (id_rol));
-CREATE TABLE cci01_servicio (id_servicio int4 NOT NULL, tx_nombre varchar(50) NOT NULL, tx_descripcion varchar(255) NOT NULL, st_activo int4 NOT NULL, nu_duracion int4 NOT NULL, PRIMARY KEY (id_servicio));
+
+-- CORRECCIÓN 1: id_servicio ahora es SERIAL para que se genere solo
+CREATE TABLE cci01_servicio (id_servicio SERIAL NOT NULL, tx_nombre varchar(50) NOT NULL, tx_descripcion varchar(255) NOT NULL, st_activo int4 NOT NULL, nu_duracion int4 NOT NULL, PRIMARY KEY (id_servicio));
+
 CREATE TABLE tca01_persona (id_persona SERIAL NOT NULL, fk_id_genero int4 NOT NULL, tx_nombre varchar(100) NOT NULL, tx_primer_apellido varchar(100) NOT NULL, tx_segundo_apellido varchar(100), fh_nacimiento date NOT NULL, PRIMARY KEY (id_persona));
 CREATE TABLE tca02_usuario (id_usuario int4 NOT NULL, fk_id_rol int4 NOT NULL, tx_login varchar(100) NOT NULL, tx_password varchar(255) NOT NULL, st_activo bool NOT NULL, PRIMARY KEY (id_usuario),CONSTRAINT uk_tx_login UNIQUE (tx_login));
 CREATE TABLE tce01_establecimiento (id_establecimiento SERIAL NOT NULL, tx_nombre varchar(100) NOT NULL, PRIMARY KEY (id_establecimiento));
@@ -14,7 +17,11 @@ CREATE TABLE tce08_horario (id_horario SERIAL NOT NULL, fk_id_sucursal int4 NOT 
 CREATE TABLE tci01_estado_lista_precio (id_estado SERIAL NOT NULL, tx_nombre varchar(50) NOT NULL, PRIMARY KEY (id_estado));
 CREATE TABLE tci02_servicio_lista_precio (fk_id_servicio int4 NOT NULL, fk_id_lista_precio int4 NOT NULL, nu_precio int4 NOT NULL, PRIMARY KEY (fk_id_servicio, fk_id_lista_precio));
 CREATE TABLE tci03_lista_precio (id_lista_precio SERIAL NOT NULL, fk_id_estado int4 NOT NULL, tx_nombre varchar(50) NOT NULL, fh_inicio timestamp NOT NULL, fh_fin timestamp, PRIMARY KEY (id_lista_precio));
-CREATE TABLE tci05_cita (id_cita SERIAL NOT NULL, fk_id_persona int4 NOT NULL, fk_id_servicio int4 NOT NULL, fk_id_lista_precio int4 NOT NULL, fk_id_sucursal int4 NOT NULL, fk_id_empleado int4 NOT NULL, PRIMARY KEY (id_cita));
+
+-- CORRECCIÓN 2: Agregado st_pagado para el flujo de cobro
+CREATE TABLE tci05_cita (id_cita SERIAL NOT NULL, fk_id_persona int4 NOT NULL, fk_id_servicio int4 NOT NULL, fk_id_lista_precio int4 NOT NULL, fk_id_sucursal int4 NOT NULL, fk_id_empleado int4 NOT NULL, st_pagado bool DEFAULT false, PRIMARY KEY (id_cita));
+
+-- RELACIONES (Foreign Keys) - Sin cambios, solo verificadas
 ALTER TABLE tca01_persona ADD CONSTRAINT FKtca01_pers852780 FOREIGN KEY (fk_id_genero) REFERENCES cca01_genero (id_genero);
 ALTER TABLE tca02_usuario ADD CONSTRAINT FKtca02_usua862702 FOREIGN KEY (id_usuario) REFERENCES tca01_persona (id_persona);
 ALTER TABLE tci05_cita ADD CONSTRAINT FKtci05_cita559502 FOREIGN KEY (fk_id_persona) REFERENCES tca01_persona (id_persona);
