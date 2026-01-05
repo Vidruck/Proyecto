@@ -1,79 +1,111 @@
 :root {
-    /* --- VARIABLES BASE (MODO CLARO / LIGHT) --- */
-    --adwaita-blue: #3584e4;
-    --adwaita-blue-dark: #1c71d8;
+    /* --- VARIABLES BASE (MODO CLARO / LIGHT - Catppuccin Latte) --- */
+    --adwaita-blue: #1e66f5;
+    /* Blue */
+    --adwaita-blue-dark: #1b52c9;
+    /* Darker Blue custom */
 
-    /* Fondos y Textos (Default Light) */
-    --bg-color: #fafafa;
+    /* Fondos y Textos (Default Light - Latte) */
+    --bg-color: #eff1f5;
+    /* Base */
     --card-bg: #ffffff;
-    --text-color: #2e3436;
-    --text-muted: #888a85;
-    --border-color: #deddda;
+    /* Surface0ish/White */
+    --text-color: #4c4f69;
+    /* Text */
+    --text-muted: #6c6f85;
+    /* Subtext0 */
+    --border-color: #ccd0da;
+    /* Surface0 */
 
     /* Inputs */
-    --input-bg: #f6f5f4;
-    --input-text: #2e3436;
-    --input-focus-shadow: rgba(53, 132, 228, 0.2);
+    --input-bg: #e6e9ef;
+    /* Mantle */
+    --input-text: #4c4f69;
+    /* Text */
+    --input-focus-shadow: rgba(30, 102, 245, 0.2);
 
     /* Errores */
-    --error-color: #ed333b;
+    --error-color: #d20f39;
+    /* Red */
 
     /* IPN Colors */
-    --ipn-guinda: #6c1d45;
+    --ipn-guinda: #e64553;
+    /* Maroon */
 }
 
 /* --- DETECCIÓN AUTOMÁTICA Y MANUAL DE MODO OSCURO --- */
 @media (prefers-color-scheme: dark) {
     :root {
-        /* Redefinimos los colores para Adwaita Dark */
-        --bg-color: #242424;
+        /* Redefinimos los colores para Catppuccin Mocha */
+        --bg-color: #1e1e2e;
+        /* Base */
         /* Gris muy oscuro, típico de GNOME */
-        --card-bg: #303030;
+        --card-bg: #313244;
+        /* Surface0 */
         /* Tarjetas un poco más claras */
-        --text-color: #ffffff;
+        --text-color: #cdd6f4;
+        /* Text */
         /* Texto blanco */
-        --text-muted: #c0bfbc;
+        --text-muted: #a6adc8;
+        /* Subtext0 */
         /* Texto secundario gris claro */
-        --border-color: #454545;
+        --border-color: #45475a;
+        /* Surface1 */
         /* Bordes oscuros sutiles */
 
         /* Inputs Dark */
-        --input-bg: #383838;
-        --input-text: #ffffff;
-        --input-focus-shadow: rgba(53, 132, 228, 0.4);
+        --input-bg: #45475a;
+        /* Surface1 */
+        --input-text: #cdd6f4;
+        /* Text */
+        --input-focus-shadow: rgba(137, 180, 250, 0.4);
 
         /* IPN Colors Dark Mode */
-        --ipn-guinda: #ffccd5;
+        --ipn-guinda: #eba0ac;
+        /* Maroon */
     }
 }
 
 /* Soporte para cambio manual (Bootstrap o clase custom) */
 [data-bs-theme="dark"],
 .dark-mode {
-    --bg-color: #242424;
-    --card-bg: #303030;
-    --text-color: #ffffff;
-    --text-muted: #c0bfbc;
-    --border-color: #454545;
-    --input-bg: #383838;
-    --input-text: #ffffff;
-    --input-focus-shadow: rgba(53, 132, 228, 0.4);
-    --ipn-guinda: #ffccd5;
+    --bg-color: #1e1e2e;
+    --card-bg: #313244;
+    --text-color: #cdd6f4;
+    --text-muted: #a6adc8;
+    --border-color: #45475a;
+    --input-bg: #45475a;
+    --input-text: #cdd6f4;
+    --input-focus-shadow: rgba(137, 180, 250, 0.4);
+    --ipn-guinda: #eba0ac;
 }
 
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
     margin: 0;
     transition: background-color 0.3s ease, color 0.3s ease;
-    /* Transición suave al cambiar de modo */
+    display: block;
 }
-
+body.login-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* --- AJUSTES PARA EL LOGO EN NAVBAR --- */
+.navbar-logo {
+    height: 40px; /* Tamaño del logo */
+    width: auto;
+    margin-right: 10px;
+    border-radius: 6px; /* Opcional: bordes redondeados suavemente */
+}
+/* Asegurar que el contenido del dashboard no quede oculto tras la navbar */
+.dashboard-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
 /* Override Bootstrap labels */
 .form-label,
 label {
@@ -172,3 +204,90 @@ a:hover {
     color: var(--error-color);
     font-size: 0.85em;
 }
+/* --- NUEVOS ESTILOS PARA EL DASHBOARD (welcome.html) --- */
+
+/* Navbar estilo Adwaita/Glassy */
+.navbar-custom {
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.navbar-brand {
+    font-weight: 800;
+    color: var(--text-color) !important;
+    font-size: 1.25rem;
+}
+
+.user-profile-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-right: 1rem;
+}
+
+/* Contenedor de bienvenida */
+.welcome-header {
+    margin-bottom: 2rem;
+    text-align: left;
+}
+.welcome-header h2 {
+    font-weight: 700;
+    color: var(--text-color);
+}
+.welcome-header p {
+    color: var(--text-muted);
+}
+
+/* Grid de Tarjetas de Acción */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Tarjeta de Dashboard */
+.dash-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+    text-decoration: none; /* Por si es un <a> */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.dash-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: var(--adwaita-blue);
+}
+
+.dash-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--adwaita-blue);
+}
+
+.dash-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.dash-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* Variación para acciones peligrosas o secundarias */
+.dash-card.danger:hover .dash-icon { color: var(--error-color); }
+.dash-card.danger:hover { border-color: var(--error-color); }

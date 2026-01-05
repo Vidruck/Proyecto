@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Configuración de Servicios</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<nav class="navbar navbar-custom mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/welcome">
+            <i class="bi bi-arrow-left"></i> Volver al Dashboard
+        </a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card card-custom">
+                <div class="card-header-custom">
+                    <h3>Servicios y Paquetes</h3>
+                    <p class="text-muted">Define los servicios, su duración (para los bloques) y costo.</p>
+                </div>
+                <div class="card-body p-4">
+
+                    <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show">
+                        <span th:text="${mensajeExito}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <form action="/servicios/guardar" method="post" th:object="${servicioForm}">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nombre del Servicio</label>
+                            <input type="text" class="form-control" th:field="*{nombre}" placeholder="Ej. Corte Caballero Clásico" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" th:field="*{descripcion}" rows="2" placeholder="Detalles del paquete..."></textarea>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Duración (Minutos)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-clock"></i></span>
+                                    <input type="number" class="form-control" th:field="*{duracion}" placeholder="30" min="15" step="15" required>
+                                </div>
+                                <div class="form-text">Esto define el tamaño del bloque en la agenda.</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Precio (MXN)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control" th:field="*{precio}" placeholder="150" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-ipn btn-lg">Guardar Configuración</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

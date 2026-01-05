@@ -28,4 +28,16 @@ public class Cita {
 
     @Column(name = "fk_id_lista_precio")
     private Integer idListaPrecio;
+
+    @Column(name = "st_pagado")
+    private Boolean pagado;
+    // Relaciones de solo lectura (JPA Magic para traer nombres)
+    @ManyToOne
+    @JoinColumn(name = "fk_id_servicio", insertable = false, updatable = false)
+    private Servicio servicio;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_id_sucursal", insertable = false, updatable = false)
+    private Sucursal sucursal;
+
 }

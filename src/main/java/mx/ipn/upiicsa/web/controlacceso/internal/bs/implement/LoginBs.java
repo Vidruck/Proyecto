@@ -64,7 +64,7 @@ public class LoginBs implements LoginService {
 
         loginRepository.saveUsuario(Usuario.builder()
                 .id(idPersona)
-                .idRol(1)
+                .idRol(3)
                 .login(signin.getLogin())
                 .password(passwordHash) // <--- Guardamos el HASH
                 .activo(true)
