@@ -24,17 +24,28 @@ public class LoginController {
     private LoginService loginService;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, HttpSession session) {
+        // Opcional: Si ya hay sesión, redirigir directo al welcome
+        if (session.getAttribute("persona") != null) {
+            return "redirect:/welcome";
+        }
         model.addAttribute("loginDto", new LoginDto());
         return "index";
     }
+    @GetMapping("/welcome")
+    public String showDashboard(HttpSession session, Model model) {
+        // 1. Verificar seguridad: ¿Existe el usuario en sesión?
+        if (session.getAttribute("persona") == null) {
+            // Si no hay sesión, lo mandamos al login
+            return "redirect:/";
+        }
 
-    //@PostMapping("/")
-    //public String login(@RequestParam String username, @RequestParam String password, Model model){
-    //    System.out.println("USERNAME: " + username);
-    //    System.out.println("PASSWORD: " + password);
-    //    return "index";
-    //}
+        /* 2. Si todo bien mostramos la vista welcome.html
+         Thymeleaf ya tiene acceso al objeto "session", así que no hace falta agregarlo al modelo manualmente*/
+        return "welcome";
+    }
+
+
 
     @PostMapping("/")
     public String login(@Valid @ModelAttribute LoginDto loginDto, BindingResult bindingResult, Model model, HttpSession session) {
