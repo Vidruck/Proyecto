@@ -1,113 +1,131 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Registro de Usuario - IPN</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-<body>
 
-<div class="container py-4"> <div class="row justify-content-center">
-        <div class="col-lg-8 col-xl-7"> <div class="card card-custom">
+<body class="login-layout">
 
-                <div class="card-header-custom">
-                    <h1 class="mt-2">Crear Cuenta</h1>
-                    <p class="text-muted fw-normal" style="font-size: 1rem; margin-top: 5px;">
-                        Ingresa tus datos personales para registrarte en el sistema
-                    </p>
-                </div>
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="card card-custom">
 
-                <div class="card-body p-4 p-md-5"> <form action="/signin" th:object="${signinDto}" method="post">
+                    <div class="card-header-custom">
+                        <h1 class="mt-2">Crear Cuenta</h1>
+                        <p class="text-muted fw-normal" style="font-size: 1rem; margin-top: 5px;">
+                            Ingresa tus datos personales para registrarte en el sistema
+                        </p>
+                    </div>
 
-                        <h6 class="text-muted text-uppercase fw-bold mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">Información Personal</h6>
+                    <div class="card-body p-4 p-md-5">
+                        <form action="/signin" th:object="${signinDto}" method="post">
 
-                        <div class="row g-3"> <div class="col-md-12">
-                                <label class="form-label required fw-bold">Nombre(s)</label>
-                                <input type="text" class="form-control" th:field="*{nombre}"
-                                       placeholder="Ej. Juan Carlos"
-                                       th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid' : ''">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
-                            </div>
+                            <h6 class="text-muted text-uppercase fw-bold mb-3"
+                                style="font-size: 0.75rem; letter-spacing: 1px;">Información Personal</h6>
 
-                            <div class="col-md-6">
-                                <label class="form-label required fw-bold">Primer Apellido</label>
-                                <input type="text" class="form-control" th:field="*{primerApellido}"
-                                       placeholder="Ej. Pérez"
-                                       th:classappend="${#fields.hasErrors('primerApellido')} ? 'is-invalid' : ''">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('primerApellido')}" th:errors="*{primerApellido}"></div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label required fw-bold">Segundo Apellido</label>
-                                <input type="text" class="form-control" th:field="*{segundoApellido}"
-                                       placeholder="Ej. López"
-                                       th:classappend="${#fields.hasErrors('segundoApellido')} ? 'is-invalid' : ''">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('segundoApellido')}" th:errors="*{segundoApellido}"></div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label required fw-bold">Fecha de Nacimiento</label>
-                                <input type="date" class="form-control" th:field="*{fechaNacimiento}"
-                                       th:classappend="${#fields.hasErrors('fechaNacimiento')} ? 'is-invalid' : ''">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}"></div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label required fw-bold">Género</label>
-
-                                <select class="form-select" th:field="*{idGenero}" th:errorclass="is-invalid">
-                                    <option value="" selected>Seleccione...</option>
-                                    <option value="0">Hombre</option>
-                                    <option value="1">Mujer</option>
-                                </select>
-
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('idGenero')}" th:errors="*{idGenero}"></div>
-                            </div>
-                        </div>
-
-                        <hr class="my-4" style="border-color: var(--border-color); opacity: 0.5;">
-
-                        <h6 class="text-muted text-uppercase fw-bold mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">Seguridad de la Cuenta</h6>
-
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label required fw-bold">Correo Electrónico (Login)</label>
-                                <input type="email" class="form-control" th:field="*{login}"
-                                       placeholder="usuario@ipn.mx"
-                                       th:classappend="${#fields.hasErrors('login')} ? 'is-invalid' : ''">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label required fw-bold">Contraseña</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" th:field="*{password}" id="inputPassword" placeholder="••••••••">
-                                    <button type="button" class="btn btn-outline-secondary btn-toggle-password" data-target="inputPassword">👁️</button>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label required fw-bold">Nombre(s)</label>
+                                    <input type="text" class="form-control" th:field="*{nombre}"
+                                        placeholder="Ej. Juan Carlos"
+                                        th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid' : ''">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}"
+                                        th:errors="*{nombre}"></div>
                                 </div>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label required fw-bold">Primer Apellido</label>
+                                    <input type="text" class="form-control" th:field="*{primerApellido}"
+                                        placeholder="Ej. Pérez"
+                                        th:classappend="${#fields.hasErrors('primerApellido')} ? 'is-invalid' : ''">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('primerApellido')}"
+                                        th:errors="*{primerApellido}"></div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label required fw-bold">Segundo Apellido</label>
+                                    <input type="text" class="form-control" th:field="*{segundoApellido}"
+                                        placeholder="Ej. López"
+                                        th:classappend="${#fields.hasErrors('segundoApellido')} ? 'is-invalid' : ''">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('segundoApellido')}"
+                                        th:errors="*{segundoApellido}"></div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label required fw-bold">Fecha de Nacimiento</label>
+                                    <input type="date" class="form-control" th:field="*{fechaNacimiento}"
+                                        th:classappend="${#fields.hasErrors('fechaNacimiento')} ? 'is-invalid' : ''">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('fechaNacimiento')}"
+                                        th:errors="*{fechaNacimiento}"></div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label required fw-bold">Género</label>
+                                    <select class="form-select" th:field="*{idGenero}" th:errorclass="is-invalid">
+                                        <option value="" selected>Seleccione...</option>
+                                        <option value="0">Hombre</option>
+                                        <option value="1">Mujer</option>
+                                    </select>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('idGenero')}"
+                                        th:errors="*{idGenero}"></div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="d-flex justify-content-end gap-2 mt-5">
-                            <a href="/" class="btn btn-outline-secondary">Cancelar</a> <input type="submit" class="btn btn-ipn px-4" value="Crear Cuenta"> </div>
+                            <hr class="my-4" style="border-color: var(--border-color); opacity: 0.5;">
 
-                    </form>
+                            <h6 class="text-muted text-uppercase fw-bold mb-3"
+                                style="font-size: 0.75rem; letter-spacing: 1px;">Seguridad de la Cuenta</h6>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label required fw-bold">Correo Electrónico (Login)</label>
+                                    <input type="email" class="form-control" th:field="*{login}"
+                                        placeholder="usuario@ipn.mx"
+                                        th:classappend="${#fields.hasErrors('login')} ? 'is-invalid' : ''">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('login')}"
+                                        th:errors="*{login}"></div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label required fw-bold">Contraseña</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" th:field="*{password}"
+                                            id="inputPassword" placeholder="••••••••">
+                                        <button type="button" class="btn btn-outline-secondary btn-toggle-password"
+                                            data-target="inputPassword">👁️</button>
+                                    </div>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}"
+                                        th:errors="*{password}"></div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2 mt-5">
+                                <a href="/" class="btn btn-outline-secondary">Cancelar</a> <input type="submit"
+                                    class="btn btn-ipn px-4" value="Crear Cuenta">
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
-            </div>
 
-            <div class="text-center mt-3 text-muted" style="font-size: 0.8rem;">
-                &copy; 2024 UPIICSA - IPN
-            </div>
+                <div class="text-center mt-3 text-muted" style="font-size: 0.8rem;">
+                    &copy; 2024 UPIICSA - IPN
+                </div>
 
+            </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script th:src="@{/js/security.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/security.js}"></script>
 </body>
+
 </html>

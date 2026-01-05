@@ -1,16 +1,98 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Dashboard - Citas IPN</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-<body>
-<div class="title"><h1>Iniciar sesión</h1></div>
-<div class="form-container">
-        <div class="form-row form-title">
-            <h1>Bienvenido</h1>
+<body class="dashboard-page">
+
+<nav class="navbar navbar-custom sticky-top mb-4">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img th:src="@{/img/logo.png}" alt="Logo" class="navbar-logo"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"/>
+            <i class="bi bi-scissors" style="font-size: 1.5rem; color: var(--adwaita-blue); display:none;"></i>
+            <span class="ms-2">Barbería UPIICSA</span>
+        </a>
+
+        <div class="d-flex align-items-center gap-3">
+            <div class="user-profile-text text-end d-none d-md-block">
+                <span class="d-block fw-bold" th:text="${session.persona.nombre} + ' ' + ${session.persona.primerApellido}">Usuario</span>
+                <small class="text-muted"
+                       th:text="${session.persona.usuario.idRol == 1 ? 'Administrador' : (session.persona.usuario.idRol == 2 ? 'Empleado' : 'Cliente')}">
+                    Rol
+                </small>
+            </div>
+            <a href="/" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Salir</span>
+            </a>
         </div>
-        <p><span th:text="${persona.nombre}"></span> <span th:text="${persona.primerApellido}"></span> <span th:text="${persona.segundoApellido}"></span></p>
+    </div>
+</nav>
+
+<div class="container dashboard-container">
+    <div class="welcome-header">
+        <h1>Hola, <span th:text="${session.persona.nombre}">Marianito</span>.</h1>
+        <p class="lead text-muted">Bienvenido a tu panel de control. ¿Qué deseas hacer hoy?</p>
+    </div>
+
+    <div class="dashboard-grid">
+
+        <th:block th:if="${session.persona.usuario.idRol == 3}">
+            <a href="/citas/agendar" class="dash-card">
+                <i class="bi bi-calendar-plus dash-icon"></i>
+                <div class="dash-title">Agendar Cita</div>
+                <div class="dash-desc">Reserva tu corte o servicio en tu sucursal favorita.</div>
+            </a>
+            <a href="#" class="dash-card">
+                <i class="bi bi-clock-history dash-icon"></i>
+                <div class="dash-title">Mis Citas</div>
+                <div class="dash-desc">Consulta tu historial y próximas visitas.</div>
+            </a>
+        </th:block>
+
+        <th:block th:if="${session.persona.usuario.idRol == 1}">
+            <a href="/establecimientos/alta" class="dash-card">
+                <i class="bi bi-shop dash-icon"></i>
+                <div class="dash-title">Gestión de Sucursales</div>
+                <div class="dash-desc">Alta de establecimientos y ubicación (PostGIS).</div>
+            </a>
+
+            <a href="#" class="dash-card">
+                <i class="bi bi-people-fill dash-icon"></i>
+                <div class="dash-title">Personal</div>
+                <div class="dash-desc">Administra gerentes, barberos y permisos.</div>
+            </a>
+            <a href="#" class="dash-card">
+                <i class="bi bi-tags-fill dash-icon"></i>
+                <div class="dash-title">Servicios y Paquetes</div>
+                <div class="dash-desc">Configura precios, duración y promociones.</div>
+            </a>
+            <a href="#" class="dash-card">
+                <i class="bi bi-bar-chart-fill dash-icon"></i>
+                <div class="dash-title">Reportes</div>
+                <div class="dash-desc">Métricas de ocupación y ganancias.</div>
+            </a>
+        </th:block>
+
+        <a href="#" class="dash-card">
+            <i class="bi bi-person-circle dash-icon"></i>
+            <div class="dash-title">Mi Perfil</div>
+            <div class="dash-desc">Actualiza tus datos personales y contraseña.</div>
+        </a>
+    </div>
+
+    <div class="mt-5 text-center text-muted small">
+        &copy; 2026 Barbería UPIICSA - Sistema de Gestión
+    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
