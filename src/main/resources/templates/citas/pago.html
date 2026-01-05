@@ -23,23 +23,27 @@
                     </div>
 
                     <ul class="list-group list-group-flush mb-4 rounded border">
-                        <li class="list-group-item d-flex justify-content-between bg-transparent text-white">
-                            <span>Servicio:</span>
-                            <strong th:text="${servicio.nombre}">Corte</strong>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between bg-transparent text-white">
-                            <span>Fecha:</span>
-                            <strong th:text="${citaDto.fecha}">2026-01-01</strong>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between bg-transparent text-white">
-                            <span>Hora:</span>
-                            <strong th:text="${citaDto.hora}">12:00</strong>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between bg-transparent text-white fw-bold">
-                            <span>Total a Pagar:</span>
-                            <span class="text-success">$150.00 MXN</span>
-                        </li>
-                    </ul>
+                        <ul class="list-group list-group-flush mb-4 rounded border">
+                            <li class="list-group-item d-flex justify-content-between bg-transparent">
+                                <span>Servicio:</span>
+                                <strong th:text="${servicio.nombre}">Corte</strong>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between bg-transparent">
+                                <span>Fecha:</span>
+                                <strong th:text="${citaDto.fecha}">2026-01-01</strong>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between bg-transparent">
+                                <span>Hora:</span>
+                                <strong th:text="${citaDto.hora}">12:00</strong>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between bg-transparent fw-bold">
+                                <span>Total a Pagar:</span>
+                                <span class="text-success" th:text="'$' + ${precio} + ' MXN'">$150.00 MXN</span>
+                            </li>
+                        </ul>
 
                     <h6 class="text-muted text-uppercase fw-bold mb-3 small">Método de Pago</h6>
                     <form action="/citas/finalizar" method="post">

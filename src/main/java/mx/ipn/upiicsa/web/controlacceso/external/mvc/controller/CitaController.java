@@ -5,6 +5,9 @@ import mx.ipn.upiicsa.web.controlacceso.external.jpa.repository.CitaRepository;
 import mx.ipn.upiicsa.web.controlacceso.external.jpa.repository.ServicioRepository;
 import mx.ipn.upiicsa.web.controlacceso.external.mvc.dto.AgendarCitaDto;
 import mx.ipn.upiicsa.web.controlacceso.internal.bs.entity.Persona;
+import mx.ipn.upiicsa.web.controlacceso.internal.bs.entity.Servicio;
+import mx.ipn.upiicsa.web.controlacceso.internal.bs.entity.ServicioListaPrecio;
+import mx.ipn.upiicsa.web.controlacceso.internal.bs.entity.pk.ServicioListaPrecioPK;
 import mx.ipn.upiicsa.web.controlacceso.internal.input.CitaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,8 @@ public class CitaController {
     @Autowired private CitaService citaService;
     @Autowired private ServicioRepository servicioRepository;
     @Autowired private CitaRepository citaRepository;
+    @Autowired
+    private mx.ipn.upiicsa.web.controlacceso.external.jpa.repository.ServicioListaPrecioRepository precioRepo;
 
     // 1. VER HISTORIAL
     @GetMapping("/mis-citas")
@@ -38,18 +43,24 @@ public class CitaController {
     public String mostrarAgendar(@RequestParam(required = false) Integer idServicio,
                                  @RequestParam(required = false) LocalDate fecha,
                                  Model model) {
-        model.addAttribute("servicios", servicioRepository.findAll());
+
+        //  En lugar de enviar servicios sueltos, enviamos la relación con precio
+        // Esto busca en la tabla tci02_servicio_lista_precio
+        model.addAttribute("itemsServicio", precioRepo.findAll());
+
         AgendarCitaDto dto = new AgendarCitaDto();
         if (idServicio != null) dto.setIdServicio(idServicio);
         if (fecha != null) dto.setFecha(fecha);
         model.addAttribute("citaDto", dto);
 
         if (idServicio != null && fecha != null) {
-            model.addAttribute("horariosLibres", citaService.obtenerHorariosDisponibles(fecha, idServicio));
+            List<LocalTime> horariosLibres = citaService.obtenerHorariosDisponibles(fecha, idServicio);
+            model.addAttribute("horariosLibres", horariosLibres);
             model.addAttribute("busquedaRealizada", true);
         } else {
             model.addAttribute("busquedaRealizada", false);
         }
+
         return "agendar";
     }
 
@@ -57,8 +68,20 @@ public class CitaController {
     @PostMapping("/confirmar")
     public String confirmarPago(@ModelAttribute AgendarCitaDto citaDto, Model model, HttpSession session) {
         if(session.getAttribute("persona") == null) return "redirect:/";
+
         model.addAttribute("citaDto", citaDto);
-        model.addAttribute("servicio", servicioRepository.findById(citaDto.getIdServicio()).orElseThrow());
+
+        // 1. Buscamos el servicio (para el nombre)
+        Servicio servicio = servicioRepository.findById(citaDto.getIdServicio()).orElseThrow();
+        model.addAttribute("servicio", servicio);
+
+        // 2. Buscamos el PRECIO REAL (ID Servicio + Lista 1)
+        ServicioListaPrecioPK pk = new ServicioListaPrecioPK(citaDto.getIdServicio(), 1);
+        ServicioListaPrecio itemPrecio = precioRepo.findById(pk).orElseThrow();
+
+        // Pasamos el precio suelto a la vista
+        model.addAttribute("precio", itemPrecio.getPrecio());
+
         return "citas/pago";
     }
 
@@ -69,8 +92,6 @@ public class CitaController {
         if(persona == null) return "redirect:/";
 
         citaService.agendarCita(citaDto, persona.getUsuario());
-        // Aquí se  podra actualizar el campo 'pagado' a true si modificas el servicio,
-        // o hacerlo manualmente si recuperas la cita creada.
 
         ra.addFlashAttribute("mensajeExito", "¡Cita pagada y agendada correctamente!");
         return "redirect:/citas/mis-citas";

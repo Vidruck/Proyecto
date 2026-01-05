@@ -2,72 +2,93 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Agendar Cita</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 
-<div class="container mt-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">Agendar Nueva Cita</h3>
-        </div>
-        <div class="card-body">
+<nav class="navbar navbar-custom mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/welcome">
+            <i class="bi bi-arrow-left"></i> Volver al Dashboard
+        </a>
+    </div>
+</nav>
 
-            <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show">
-                <strong th:text="${mensajeExito}"></strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-
-            <form action="/citas/agendar" method="get" class="row g-3 mb-4">
-                <div class="col-md-6">
-                    <label class="form-label">Servicio</label>
-                    <select name="idServicio" class="form-select" onchange="this.form.submit()">
-                        <option value="" disabled selected>Selecciona un servicio...</option>
-                        <option th:each="s : ${servicios}"
-                                th:value="${s.id}"
-                                th:text="${s.nombre}"
-                                th:selected="${citaDto.idServicio == s.id}"></option>
-                    </select>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card card-custom">
+                <div class="card-header-custom">
+                    <h3>Agendar Nueva Cita</h3>
+                    <p class="text-muted">Selecciona el servicio y verifica disponibilidad.</p>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" name="fecha" class="form-control"
-                           th:value="${citaDto.fecha}"
-                           onchange="this.form.submit()">
-                </div>
-            </form>
+                <div class="card-body p-4">
 
-            <hr>
-
-            <div th:if="${busquedaRealizada}">
-                <h5 class="mb-3">Horarios Disponibles para el <span th:text="${citaDto.fecha}"></span>:</h5>
-
-                <div th:if="${horariosLibres.empty}" class="alert alert-warning">
-                    No hay cupos disponibles para esta fecha. Intenta otro día.
-                </div>
-
-                <div class="row g-2">
-                    <div class="col-auto" th:each="hora : ${horariosLibres}">
-                        <form action="/citas/guardar" method="post">
-                            <input type="hidden" name="idServicio" th:value="${citaDto.idServicio}">
-                            <input type="hidden" name="fecha" th:value="${citaDto.fecha}">
-                            <input type="hidden" name="hora" th:value="${hora}">
-
-                            <button type="submit" class="btn btn-outline-success">
-                                <span th:text="${hora}">09:00</span>
-                            </button>
-                        </form>
+                    <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show">
+                        <strong th:text="${mensajeExito}"></strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
+
+                    <form action="/citas/agendar" method="get" class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Servicio</label>
+                            <select name="idServicio" class="form-select" onchange="this.form.submit()">
+                                <option value="" disabled selected>Selecciona un servicio...</option>
+
+                                <option th:each="item : ${itemsServicio}"
+                                        th:value="${item.servicio.id}"
+                                        th:text="${item.servicio.nombre} + ' ($' + ${item.precio} + ')'"
+                                        th:selected="${citaDto.idServicio == item.servicio.id}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Fecha Deseada</label>
+                            <input type="date" name="fecha" class="form-control"
+                                   th:value="${citaDto.fecha}"
+                                   onchange="this.form.submit()">
+                        </div>
+                    </form>
+
+                    <hr class="my-4" style="border-color: var(--border-color);">
+
+                    <div th:if="${busquedaRealizada}">
+                        <h5 class="mb-3 text-muted">Horarios Disponibles:</h5>
+
+                        <div th:if="${#lists.isEmpty(horariosLibres)}" class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle"></i> No hay cupos disponibles para esta fecha. Intenta otro día.
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <div th:each="hora : ${horariosLibres}">
+                                <form action="/citas/confirmar" method="post">
+                                    <input type="hidden" name="idServicio" th:value="${citaDto.idServicio}">
+                                    <input type="hidden" name="fecha" th:value="${citaDto.fecha}">
+                                    <input type="hidden" name="hora" th:value="${hora}">
+
+                                    <button type="submit" class="btn btn-outline-primary px-4 py-2">
+                                        <i class="bi bi-clock"></i> <span th:text="${hora}">09:00</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:unless="${busquedaRealizada}" class="text-center text-muted py-5">
+                        <i class="bi bi-calendar-check" style="font-size: 3rem; opacity: 0.5;"></i>
+                        <p class="mt-3">Selecciona un servicio y una fecha para ver la disponibilidad.</p>
+                    </div>
+
                 </div>
             </div>
-
-            <div th:unless="${busquedaRealizada}" class="text-center text-muted py-4">
-                <p>Selecciona un servicio y una fecha para ver la disponibilidad.</p>
-            </div>
-
         </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
