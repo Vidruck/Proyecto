@@ -77,6 +77,7 @@ public class CitaBs implements CitaService {
                 .idSucursal(SUCURSAL_DEFAULT)
                 .idEmpleado(EMPLEADO_DEFAULT)
                 .idListaPrecio(LISTA_PRECIO_DEFAULT)
+                .pagado(true)
                 .build();
 
         nuevaCita = citaRepo.save(nuevaCita);

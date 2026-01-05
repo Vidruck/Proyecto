@@ -95,4 +95,10 @@ public class LoginController {
         }
         return resultado;
     }
+    // ---  MÉTODO PARA CERRAR SESIÓN ---
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // Destruye la sesión y borra los datos
+        return "redirect:/";  // Ahora sí, al ir al inicio, pedirá login
+    }
 }

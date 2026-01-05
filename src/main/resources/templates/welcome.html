@@ -28,7 +28,7 @@
                     Rol
                 </small>
             </div>
-            <a href="/" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2">
+            <a href="/logout" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Salir</span>
             </a>
@@ -50,7 +50,7 @@
                 <div class="dash-title">Agendar Cita</div>
                 <div class="dash-desc">Reserva tu corte o servicio en tu sucursal favorita.</div>
             </a>
-            <a href="#" class="dash-card">
+            <a href="/citas/mis-citas" class="dash-card">
                 <i class="bi bi-clock-history dash-icon"></i>
                 <div class="dash-title">Mis Citas</div>
                 <div class="dash-desc">Consulta tu historial y próximas visitas.</div>
@@ -65,33 +65,39 @@
             </a>
 
             <a href="/empleados/alta" class="dash-card">
-            <i class="bi bi-people-fill dash-icon"></i>
-            <div class="dash-title">Personal</div>
+                <i class="bi bi-people-fill dash-icon"></i>
+                <div class="dash-title">Personal</div>
+                <div class="dash-desc">Administra gerentes, barberos y permisos de acceso.</div>
             </a>
+
             <a href="/servicios/alta" class="dash-card">
                 <i class="bi bi-tags-fill dash-icon"></i>
                 <div class="dash-title">Servicios y Paquetes</div>
-                <div class="dash-desc">Configura precios, duración y promociones.</div>
+                <div class="dash-desc">Configura precios, duración y paquetes promocionales.</div>
             </a>
+
             <a href="/reportes" class="dash-card">
                 <i class="bi bi-bar-chart-fill dash-icon"></i>
                 <div class="dash-title">Reportes</div>
-                <div class="dash-desc">Métricas de ocupación y ganancias.</div>
+                <div class="dash-desc">Métricas de ocupación y ganancias por sucursal.</div>
+            </a>
+
+            <a href="/usuarios" class="dash-card">
+                <i class="bi bi-shield-check dash-icon"></i>
+                <div class="dash-title">Gestión de Usuarios</div>
+                <div class="dash-desc">Administra roles y permisos.</div>
             </a>
         </th:block>
 
-        <a href="#" class="dash-card">
+        <a href="/perfil" class="dash-card">
             <i class="bi bi-person-circle dash-icon"></i>
             <div class="dash-title">Mi Perfil</div>
             <div class="dash-desc">Actualiza tus datos personales y contraseña.</div>
         </a>
-    </div>
 
-    <div class="mt-5 text-center text-muted small">
-        &copy; 2026 Barbería UPIICSA - Sistema de Gestión
-    </div>
+    </div> <div class="mt-5 text-center text-muted small">
+    &copy; 2026 Barbería UPIICSA - Sistema de Gestión
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

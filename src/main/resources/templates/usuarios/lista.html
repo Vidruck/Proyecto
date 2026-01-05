@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestión de Usuarios</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<nav class="navbar navbar-custom mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/welcome">
+            <i class="bi bi-arrow-left"></i> Volver al Dashboard
+        </a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="card card-custom">
+        <div class="card-header-custom">
+            <h3>Directorio de Usuarios</h3>
+            <p class="text-muted">Administra los roles y permisos de acceso al sistema.</p>
+        </div>
+
+        <div class="card-body p-0">
+            <div th:if="${mensajeExito}" class="alert alert-success m-3 alert-dismissible fade show">
+                <span th:text="${mensajeExito}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="color: var(--text-color);">
+                    <thead style="background-color: var(--bg-color);">
+                    <tr>
+                        <th class="p-3">Usuario (ID)</th>
+                        <th>Nombre Completo</th>
+                        <th>Rol Actual</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="u : ${usuarios}">
+                        <td class="p-3">
+                            <strong th:text="${u.login}">correo@ejemplo.com</strong>
+                            <br>
+                            <small class="text-muted" th:text="'ID: ' + ${u.id}"></small>
+                        </td>
+                        <td>
+                            <span th:text="${u.persona.nombre} + ' ' + ${u.persona.primerApellido}">Nombre</span>
+                        </td>
+                        <td>
+                            <span th:if="${u.idRol == 1}" class="badge bg-danger">Admin</span>
+                            <span th:if="${u.idRol == 2}" class="badge bg-primary">Empleado</span>
+                            <span th:if="${u.idRol == 3}" class="badge bg-secondary">Cliente</span>
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    Cambiar Rol
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <form action="/usuarios/cambiar-rol" method="post" style="display:inline;">
+                                            <input type="hidden" name="idUsuario" th:value="${u.id}">
+                                            <input type="hidden" name="nuevoRol" value="1">
+                                            <button class="dropdown-item text-danger fw-bold" type="submit">
+                                                <i class="bi bi-shield-lock"></i> Hacer Admin
+                                            </button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form action="/usuarios/cambiar-rol" method="post" style="display:inline;">
+                                            <input type="hidden" name="idUsuario" th:value="${u.id}">
+                                            <input type="hidden" name="nuevoRol" value="2">
+                                            <button class="dropdown-item text-primary" type="submit">
+                                                <i class="bi bi-person-badge"></i> Hacer Empleado
+                                            </button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form action="/usuarios/cambiar-rol" method="post" style="display:inline;">
+                                            <input type="hidden" name="idUsuario" th:value="${u.id}">
+                                            <input type="hidden" name="nuevoRol" value="3">
+                                            <button class="dropdown-item" type="submit">
+                                                <i class="bi bi-person"></i> Hacer Cliente
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
