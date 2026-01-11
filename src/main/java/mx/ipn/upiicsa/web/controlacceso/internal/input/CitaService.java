@@ -9,6 +9,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface CitaService {
-  List<LocalTime> obtenerHorariosDisponibles(LocalDate fecha, Integer id_servicio);
+  List<LocalTime> obtenerHorariosDisponibles(LocalDate fecha, Integer id_servicio, Integer idEmpleadoPreferido);
   void agendarCita(AgendarCitaDto dto, Usuario usuario);
 }

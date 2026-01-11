@@ -2,7 +2,7 @@ package mx.ipn.upiicsa.web.controlacceso.internal.bs.implement;
 
 import mx.ipn.upiicsa.web.controlacceso.external.jpa.repository.BloqueCitaRepository;
 import mx.ipn.upiicsa.web.controlacceso.external.jpa.repository.CitaRepository;
-import mx.ipn.upiicsa.web.controlacceso.external.jpa.repository.EmpleadoRepository; // <--- 1. IMPORTAR ESTO
+import mx.ipn.upiicsa.web.controlacceso.external.jpa.repository.EmpleadoRepository;
 import mx.ipn.upiicsa.web.controlacceso.external.jpa.repository.ServicioRepository;
 import mx.ipn.upiicsa.web.controlacceso.external.mvc.dto.AgendarCitaDto;
 import mx.ipn.upiicsa.web.controlacceso.internal.bs.entity.BloqueCita;
@@ -29,26 +29,20 @@ public class CitaBs implements CitaService {
     private CitaRepository citaRepo;
     @Autowired
     private ServicioRepository servicioRepo;
-
-    // 2. INYECTAR EL REPOSITORIO DE EMPLEADOS
     @Autowired
     private EmpleadoRepository empleadoRepo;
 
-    // Constantes por defecto
     private static final Integer SUCURSAL_DEFAULT = 1;
-    // private static final Integer EMPLEADO_DEFAULT = 1; // <--- ESTO CAUSABA EL ERROR
     private static final Integer LISTA_PRECIO_DEFAULT = 1;
 
     @Override
-    public List<LocalTime> obtenerHorariosDisponibles(LocalDate fecha, Integer idServicio) {
-        // ... (Tu código de horarios se queda igual) ...
+    public List<LocalTime> obtenerHorariosDisponibles(LocalDate fecha, Integer idServicio, Integer idEmpleadoPreferido) {
         var servicio = servicioRepo.findById(idServicio).orElseThrow();
         int duracion = servicio.getDuracion();
 
         List<LocalTime> horarios = new ArrayList<>();
         LocalTime inicioDia = LocalTime.of(9, 0);
         LocalTime finDia = LocalTime.of(18, 0);
-
         LocalDateTime inicioRango = fecha.atTime(inicioDia);
         LocalDateTime finRango = fecha.atTime(finDia);
 
@@ -56,16 +50,28 @@ public class CitaBs implements CitaService {
 
         LocalTime pivote = inicioDia;
         while (pivote.plusMinutes(duracion).isBefore(finDia) || pivote.plusMinutes(duracion).equals(finDia)) {
-            boolean ocupado = false;
+            boolean horaOcupada = false;
             LocalDateTime momentoCita = fecha.atTime(pivote);
 
             for (BloqueCita b : bloquesOcupados) {
                 if (b.getFechaInicio().equals(momentoCita)) {
-                    ocupado = true;
-                    break;
+                    // Lógica de preferencia de barbero
+                    if (idEmpleadoPreferido != null) {
+                        // Si el cliente quiere a uno específico, revisamos si ESE bloque es de él
+                        var citaOriginal = citaRepo.findById(b.getIdCita()).orElse(null);
+                        if (citaOriginal != null && citaOriginal.getIdEmpleado().equals(idEmpleadoPreferido)) {
+                            horaOcupada = true;
+                            break;
+                        }
+                    } else {
+                        // Si no elige, cualquier bloque en esa hora cuenta como ocupado (modelo simple)
+                        horaOcupada = true;
+                        break;
+                    }
                 }
             }
-            if (!ocupado) {
+
+            if (!horaOcupada) {
                 horarios.add(pivote);
             }
             pivote = pivote.plusMinutes(duracion);
@@ -76,28 +82,34 @@ public class CitaBs implements CitaService {
     @Override
     public void agendarCita(AgendarCitaDto dto, Usuario usuario) {
 
-        // 3. OBTENER UN EMPLEADO VÁLIDO DINÁMICAMENTE
-        // Buscamos el primer empleado que exista en la BD.
-        // Si no hay ninguno, lanzamos error (porque se necesita al menos uno para trabajar).
-        Integer idEmpleadoReal = empleadoRepo.findAll()
-                .stream()
-                .findFirst()
-                .map(empleado -> empleado.getId())
-                .orElseThrow(() -> new RuntimeException("No hay empleados registrados en el sistema."));
+        Integer idEmpleadoFinal;
 
-        // 4. Guardar Cita usando ese ID real
+        // 1. DETERMINAR EL EMPLEADO
+        if (dto.getIdEmpleado() != null) {
+            // Caso A: El cliente eligió a alguien
+            idEmpleadoFinal = dto.getIdEmpleado();
+        } else {
+            // Caso B: Le da igual ("Cualquiera"), asignamos al primero que encontremos
+            idEmpleadoFinal = empleadoRepo.findAll()
+                    .stream()
+                    .findFirst()
+                    .map(empleado -> empleado.getId())
+                    .orElseThrow(() -> new RuntimeException("No hay empleados disponibles para asignar."));
+        }
+
+        // 2. Guardar Cita
         Cita nuevaCita = Cita.builder()
                 .idPersona(usuario.getId())
                 .idServicio(dto.getIdServicio())
                 .idSucursal(SUCURSAL_DEFAULT)
-                .idEmpleado(idEmpleadoReal)
+                .idEmpleado(idEmpleadoFinal)
                 .idListaPrecio(LISTA_PRECIO_DEFAULT)
                 .pagado(true)
                 .build();
 
         nuevaCita = citaRepo.save(nuevaCita);
 
-        // 5. Calcular Fechas y Guardar Bloque
+        // 3. Guardar Bloque de Tiempo
         var servicio = servicioRepo.findById(dto.getIdServicio()).orElseThrow();
         LocalDateTime inicio = dto.getFecha().atTime(dto.getHora());
         LocalDateTime fin = inicio.plusMinutes(servicio.getDuracion());

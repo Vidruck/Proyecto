@@ -87,6 +87,12 @@
                                                 <i class="bi bi-person"></i> Hacer Cliente
                                             </button>
                                         </form>
+                                        <form action="/usuarios/cambiar-estado" method="post" style="display:inline;">
+                                            <input type="hidden" name="idUsuario" th:value="${u.id}">
+                                            <button th:if="${u.activo}" class="btn btn-outline-success" type="submit" title="Click para desactivar (vacaciones)">
+                                                <i class="bi bi-toggle-of"></i> Inactivo
+                                            </button>
+                                        </form>
                                     </li>
                                 </ul>
                             </div>

@@ -73,6 +73,19 @@
                                     <button type="submit" class="btn btn-outline-primary px-4 py-2">
                                         <i class="bi bi-clock"></i> <span th:text="${hora}">09:00</span>
                                     </button>
+                                    <div class="col-md-12">
+                                        <label class="form-label fw-bold">Barbero Preferido (Opcional)</label>
+                                        <select name="idEmpleado" class="form-select" onchange="this.form.submit()">
+                                            <option value="" selected>Cualquiera disponible</option>
+
+                                            <option th:each="e : ${empleados}"
+                                                    th:value="${e.id}"
+                                                    th:text="${e.persona.nombre} + ' ' + ${e.persona.primerApellido}"
+                                                    th:selected="${citaDto.idEmpleado == e.id}">
+                                            </option>
+                                        </select>
+                                        <div class="form-text">Si seleccionas a alguien, verás solo sus horarios libres.</div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
