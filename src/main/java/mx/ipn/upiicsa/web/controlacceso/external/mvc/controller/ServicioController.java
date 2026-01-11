@@ -22,6 +22,7 @@ public class ServicioController {
     @Autowired
     private ServicioListaPrecioRepository precioRepo;
 
+
     // DTO interno simple para el formulario
     @Data
     public static class ServicioForm {
@@ -64,5 +65,30 @@ public class ServicioController {
 
         redirectAttrs.addFlashAttribute("mensajeExito", "¡Servicio/Paquete registrado correctamente!");
         return "redirect:/servicios/alta";
+    }
+    // 1. Ver lista de servicios
+    @GetMapping("/lista")
+    public String listarServicios(Model model) {
+        model.addAttribute("servicios", servicioRepo.findAll()); // Trae activos e inactivos
+        return "servicios/lista";
+    }
+
+    // 2. Cambiar estado (Activar/Desactivar oferta)
+    @PostMapping("/cambiar-estado")
+    public String cambiarEstadoServicio(@RequestParam Integer id, RedirectAttributes ra) {
+        var servicioOpt = servicioRepo.findById(id);
+        if (servicioOpt.isPresent()) {
+            var servicio = servicioOpt.get();
+
+            // Invertir estado: Si es 1 pasa a 0, si es 0 pasa a 1
+            int nuevoEstado = (servicio.getActivo() == 1) ? 0 : 1;
+            servicio.setActivo(nuevoEstado);
+
+            servicioRepo.save(servicio);
+
+            String msj = (nuevoEstado == 1) ? "Servicio reactivado." : "Servicio desactivado (ya no aparecerá al agendar).";
+            ra.addFlashAttribute("mensajeExito", msj);
+        }
+        return "redirect:/servicios/lista";
     }
 }
