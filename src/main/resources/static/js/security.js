@@ -4,8 +4,6 @@
  */
 document.addEventListener('DOMContentLoaded', function () {
 
-    // --- 1. LÓGICA DE VISUALIZACIÓN DE CONTRASEÑA (TOGGLE) ---
-    // Se inicializa al cargar la página para que el botón funcione siempre.
     const toggleButtons = document.querySelectorAll('.btn-toggle-password');
     toggleButtons.forEach(button => {
         button.addEventListener('click', function () {
@@ -31,10 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault();
 
             const form = event.target;
-            // Buscamos inputs de tipo password que tengan name="password"
-            // Nota: En signin.html o index.html el input puede tener otro ID, pero name="password" es común.
-            // Si hay varios inputs de password (ej. confirmación), habría que adaptar esto.
-            // Por ahora asumimos que el que se encripta es 'input[name="password"]'.
+
             const passwordInput = form.querySelector('input[name="password"]');
 
             // Si no hay password (o campo vacío), dejamos que el backend decida o validamos.
@@ -61,8 +56,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 // 3. Reemplazamos el valor y enviamos
                 passwordInput.value = hashBase64;
 
-                // Desactivamos este listener para evitar bucles infinitos al hacer submit manual
-                // o simplemente usamos el método nativo del elemento HTMLFormElement
                 HTMLFormElement.prototype.submit.call(form);
 
             } catch (error) {
