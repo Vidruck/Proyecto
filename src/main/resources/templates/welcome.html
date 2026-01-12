@@ -1,103 +1,139 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Dashboard - Citas IPN</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Bienvenido - Barbería UPIICSA</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-<body class="dashboard-page">
+<body>
 
-<nav class="navbar navbar-custom sticky-top mb-4">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="#">
-            <img th:src="@{/img/logo.png}" alt="Logo" class="navbar-logo"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"/>
-            <i class="bi bi-scissors" style="font-size: 1.5rem; color: var(--adwaita-blue); display:none;"></i>
-            <span class="ms-2">Barbería UPIICSA</span>
-        </a>
+<nav class="navbar navbar-expand-lg navbar-custom mb-4">
+    <div class="d-flex align-items-center gap-3">
 
-        <div class="d-flex align-items-center gap-3">
-            <div class="user-profile-text text-end d-none d-md-block">
-                <span class="d-block fw-bold" th:text="${session.persona.nombre} + ' ' + ${session.persona.primerApellido}">Usuario</span>
-                <small class="text-muted"
-                       th:text="${session.persona.usuario.idRol == 1 ? 'Administrador' : (session.persona.usuario.idRol == 2 ? 'Empleado' : 'Cliente')}">
-                    Rol
-                </small>
-            </div>
-            <a href="/logout" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Salir</span>
-            </a>
+        <div class="text-end d-none d-md-block" style="line-height: 1.2;">
+        <span class="d-block fw-bold text-primary" style="font-size: 1rem;"
+              th:text="${session.persona.nombre} + ' ' + ${session.persona.primerApellido}">
+            Usuario
+        </span>
+            <small class="text-muted" style="font-size: 0.85rem;"
+                   th:text="${session.persona.usuario.idRol == 1 ? 'Administrador' : (session.persona.usuario.idRol == 2 ? 'Empleado' : 'Cliente')}">
+                Rol
+            </small>
         </div>
+
+        <a href="/logout" class="btn btn-danger btn-sm d-flex align-items-center gap-2 shadow-sm">
+            <i class="bi bi-box-arrow-right text-white"></i>
+            <span class="text-white fw-bold">Salir</span>
+        </a>
     </div>
 </nav>
 
-<div class="container dashboard-container">
-    <div class="welcome-header">
-        <h1>Hola, <span th:text="${session.persona.nombre}">Marianito</span>.</h1>
-        <p class="lead text-muted">Bienvenido a tu panel de control. ¿Qué deseas hacer hoy?</p>
+<div class="container">
+
+    <div class="text-center mb-5 fade-in">
+        <h1 class="display-4 fw-bold">Panel de Control</h1>
+        <p class="lead text-muted">Selecciona una opción para comenzar.</p>
     </div>
 
-    <div class="dashboard-grid">
+    <div th:if="${session.persona.usuario.idRol == 1}" class="mb-5">
+        <h4 class="mb-3 border-bottom pb-2"><i class="bi bi-shield-lock"></i> Administración del Negocio</h4>
 
-        <th:block th:if="${session.persona.usuario.idRol == 3}">
-            <a href="/citas/agendar" class="dash-card">
-                <i class="bi bi-calendar-plus dash-icon"></i>
-                <div class="dash-title">Agendar Cita</div>
-                <div class="dash-desc">Reserva tu corte o servicio en tu sucursal favorita.</div>
-            </a>
-            <a href="/citas/mis-citas" class="dash-card">
-                <i class="bi bi-clock-history dash-icon"></i>
-                <div class="dash-title">Mis Citas</div>
-                <div class="dash-desc">Consulta tu historial y próximas visitas.</div>
-            </a>
-        </th:block>
+        <div class="row g-4">
+            <div class="col-md-3"> <div class="card h-100 card-custom hover-effect">
+                <div class="card-body text-center">
+                    <i class="bi bi-people-fill text-primary" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Personal</h5>
+                    <p class="card-text text-muted small">Gestiona empleados y accesos.</p>
+                    <a href="/usuarios" class="btn btn-outline-primary stretched-link">Gestionar</a>
+                </div>
+            </div>
+            </div>
 
-        <th:block th:if="${session.persona.usuario.idRol == 1}">
-            <a href="/establecimientos/alta" class="dash-card">
-                <i class="bi bi-shop dash-icon"></i>
-                <div class="dash-title">Gestión de Sucursales</div>
-                <div class="dash-desc">Alta de establecimientos y ubicación (PostGIS).</div>
-            </a>
+            <div class="col-md-3">
+                <div class="card h-100 card-custom hover-effect">
+                    <div class="card-body text-center">
+                        <i class="bi bi-shop text-success" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3">Sucursales</h5>
+                        <p class="card-text text-muted small">Ubicaciones y mapas.</p>
+                        <a href="/sucursales" class="btn btn-outline-success stretched-link">Gestionar</a>
+                    </div>
+                </div>
+            </div>
 
-            <a href="/empleados/alta" class="dash-card">
-                <i class="bi bi-people-fill dash-icon"></i>
-                <div class="dash-title">Personal</div>
-                <div class="dash-desc">Administra gerentes, barberos y permisos de acceso.</div>
-            </a>
+            <div class="col-md-3">
+                <div class="card h-100 card-custom hover-effect">
+                    <div class="card-body text-center">
+                        <i class="bi bi-tags-fill text-warning" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3">Servicios</h5>
+                        <p class="card-text text-muted small">Paquetes y precios.</p>
+                        <a href="/servicios" class="btn btn-outline-warning stretched-link">Gestionar</a>
+                    </div>
+                </div>
+            </div>
 
-            <a href="/servicios/alta" class="dash-card">
-                <i class="bi bi-tags-fill dash-icon"></i>
-                <div class="dash-title">Servicios y Paquetes</div>
-                <div class="dash-desc">Configura precios, duración y paquetes promocionales.</div>
-            </a>
+            <div class="col-md-3">
+                <div class="card h-100 card-custom hover-effect">
+                    <div class="card-body text-center">
+                        <i class="bi bi-bar-chart-line-fill text-info" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3">Reportes</h5>
+                        <p class="card-text text-muted small">Métricas de negocio.</p>
+                        <a href="/reportes" class="btn btn-outline-info stretched-link">Ver Reportes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <a href="/reportes" class="dash-card">
-                <i class="bi bi-bar-chart-fill dash-icon"></i>
-                <div class="dash-title">Reportes</div>
-                <div class="dash-desc">Métricas de ocupación y ganancias por sucursal.</div>
-            </a>
+    <h4 class="mb-3 border-bottom pb-2"><i class="bi bi-calendar-event"></i> Operación Diaria</h4>
 
-            <a href="/usuarios" class="dash-card">
-                <i class="bi bi-shield-check dash-icon"></i>
-                <div class="dash-title">Gestión de Usuarios</div>
-                <div class="dash-desc">Administra roles y permisos.</div>
-            </a>
-        </th:block>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 card-custom hover-effect">
+                <div class="card-body text-center">
+                    <i class="bi bi-calendar-check text-danger" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Mis Citas</h5>
+                    <p class="card-text text-muted small">Historial y agenda.</p>
+                    <a href="/citas/mis-citas" class="btn btn-outline-danger stretched-link">Ver Agenda</a>
+                </div>
+            </div>
+        </div>
 
-        <a href="/perfil" class="dash-card">
-            <i class="bi bi-person-circle dash-icon"></i>
-            <div class="dash-title">Mi Perfil</div>
-            <div class="dash-desc">Actualiza tus datos personales y contraseña.</div>
-        </a>
+        <div class="col-md-4">
+            <div class="card h-100 card-custom hover-effect">
+                <div class="card-body text-center">
+                    <i class="bi bi-plus-circle-dotted text-secondary" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Agendar Cita</h5>
+                    <p class="card-text text-muted small">Reservar nuevo servicio.</p>
+                    <a href="/citas/agendar" class="btn btn-outline-secondary stretched-link">Reservar</a>
+                </div>
+            </div>
+        </div>
 
-    </div> <div class="mt-5 text-center text-muted small">
-    &copy; 2026 Barbería UPIICSA - Sistema de Gestión
+        <div class="col-md-4">
+            <div class="card h-100 card-custom hover-effect">
+                <div class="card-body text-center">
+                    <i class="bi bi-person-circle text-dark" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Mi Perfil</h5>
+                    <p class="card-text text-muted small">Datos personales.</p>
+                    <a href="/perfil" class="btn btn-outline-dark stretched-link">Configurar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
-</div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<footer class="text-center text-muted mt-5 py-4 border-top">
+    <p class="mb-0">© 2026 Barbería UPIICSA - Sistema de Control de Acceso</p>
+    <p class="mb-0">© 2026 POWERED by: Raven</p>
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

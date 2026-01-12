@@ -1,20 +1,47 @@
 package mx.ipn.upiicsa.web.controlacceso.external.mvc.dto;
 
 public class AltaSucursalDto {
-    private String nombreEstablecimiento;
-    private String nombreSucursal;
+
+    private String nombre;
+
+
     private Double latitud;
     private Double longitud;
 
-    public String getNombreEstablecimiento() { return nombreEstablecimiento; }
-    public void setNombreEstablecimiento(String nombreEstablecimiento) { this.nombreEstablecimiento = nombreEstablecimiento; }
 
-    public String getNombreSucursal() { return nombreSucursal; }
-    public void setNombreSucursal(String nombreSucursal) { this.nombreSucursal = nombreSucursal; }
+    private String nombreEstablecimiento;
 
-    public Double getLatitud() { return latitud; }
-    public void setLatitud(Double latitud) { this.latitud = latitud; }
 
-    public Double getLongitud() { return longitud; }
-    public void setLongitud(Double longitud) { this.longitud = longitud; }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
+    }
+
+    public String getNombreEstablecimiento() {
+        return nombreEstablecimiento;
+    }
+
+    public void setNombreEstablecimiento(String nombreEstablecimiento) {
+        this.nombreEstablecimiento = nombreEstablecimiento;
+    }
 }

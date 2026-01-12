@@ -58,6 +58,8 @@ public class LoginBs implements LoginService {
                 .segundoApellido(signin.getSegundoApellido())
                 .fechaNacimiento(signin.getFechaNacimiento())
                 .build());
+        // --- INICIO DE LA TRAMPA DE DEBUG ---
+
 
         // 3. Encriptamos la contraseña ANTES de guardarla en la BD
         String passwordHash = encriptarPassword(signin.getPassword());
@@ -66,7 +68,7 @@ public class LoginBs implements LoginService {
                 .id(idPersona)
                 .idRol(3)
                 .login(signin.getLogin())
-                .password(passwordHash) // <--- Guardamos el HASH
+                .password(passwordHash)
                 .activo(true)
                 .build());
         return Either.right(true);

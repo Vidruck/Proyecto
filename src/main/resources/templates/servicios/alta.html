@@ -31,39 +31,40 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
 
-                    <form action="/servicios/guardar" method="post" th:object="${servicioForm}">
+                    <form action="/servicios/guardar" method="post" th:object="${servicio}">
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Nombre del Servicio</label>
-                            <input type="text" class="form-control" th:field="*{nombre}" placeholder="Ej. Corte Caballero Clásico" required>
+                            <input type="text" class="form-control" th:field="*{nombre}" placeholder="Ej. Corte Caballero" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Descripción</label>
-                            <textarea class="form-control" th:field="*{descripcion}" rows="2" placeholder="Detalles del paquete..."></textarea>
+                            <textarea class="form-control" th:field="*{descripcion}" rows="2"></textarea>
                         </div>
 
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Duración (Minutos)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-clock"></i></span>
-                                    <input type="number" class="form-control" th:field="*{duracion}" placeholder="30" min="15" step="15" required>
-                                </div>
-                                <div class="form-text">Esto define el tamaño del bloque en la agenda.</div>
+                                <input type="number" class="form-control" th:field="*{duracion}" placeholder="30" step="15" required>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Precio (MXN)</label>
                                 <div class="input-group">
                                     <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control" th:field="*{precio}" placeholder="150" required>
+                                    <input type="number" class="form-control" name="precio" placeholder="150" required>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="d-grid gap-2 mt-4">
-                            <button type="submit" class="btn btn-ipn btn-lg">Guardar Configuración</button>
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+                            <a href="/servicios" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-return-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Guardar Servicio
+                            </button>
                         </div>
                     </form>
 

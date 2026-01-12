@@ -35,4 +35,19 @@ public class UsuarioController {
         }
         return "redirect:/usuarios";
     }
+    @PostMapping("/cambiar-estado")
+    public String cambiarEstado(@RequestParam Integer idUsuario, RedirectAttributes RedirectAttrs){
+        Optional <UsuarioJpa> usuarioOpt = usuarioRepo.findById(idUsuario);
+        if (usuarioOpt.isPresent()) {
+            UsuarioJpa usuario = usuarioOpt.get();
+            //invierte  el estado (si es true --> flase, si es false --> true)
+            boolean nuevoEstado = !usuario.getActivo();
+            usuario.setActivo(nuevoEstado);
+            usuarioRepo.save(usuario);
+
+            String estadoTexto = nuevoEstado ? "Activado (Disponible)": "Desactivado (Vacaiones/baja)";
+            RedirectAttrs.addFlashAttribute("mensajeExito", "El usuario ha sido " + estadoTexto);
+        }
+        return "redirect:/usuarios";
+    }
 }

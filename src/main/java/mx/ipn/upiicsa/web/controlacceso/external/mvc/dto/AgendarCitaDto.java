@@ -16,4 +16,6 @@ public class AgendarCitaDto {
     // @DateTimeFormat para entender el input type="time" o los strings de hora
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime hora;
+
+    private Integer idEmpleado;
 }
