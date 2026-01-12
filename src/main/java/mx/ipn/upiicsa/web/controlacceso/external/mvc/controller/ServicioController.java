@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import lombok.Data;
 
 @Controller
 @RequestMapping("/servicios")
@@ -19,76 +18,63 @@ public class ServicioController {
 
     @Autowired
     private ServicioRepository servicioRepo;
+
     @Autowired
     private ServicioListaPrecioRepository precioRepo;
 
-
-    // DTO interno simple para el formulario
-    @Data
-    public static class ServicioForm {
-        private String nombre;
-        private String descripcion;
-        private Integer duracion; // En minutos
-        private Integer precio;
-    }
-
-    @GetMapping("/alta")
-    public String mostrarAlta(Model model) {
-        model.addAttribute("servicioForm", new ServicioForm());
-        return "servicios/alta";
-    }
-
-    @PostMapping("/guardar")
-    public String guardar(@ModelAttribute ServicioForm form, RedirectAttributes redirectAttrs) {
-
-        // 1. Guardar el Servicio (Definición del Paquete)
-        Servicio servicio = Servicio.builder()
-                .nombre(form.getNombre())
-                .descripcion(form.getDescripcion())
-                .duracion(form.getDuracion())
-                .activo(1) // 1 = Activo
-                .build();
-
-        servicio = servicioRepo.save(servicio);
-
-        // 2. Asignar Precio a la Lista General (ID 1 por defecto)
-        ServicioListaPrecioPK pk = new ServicioListaPrecioPK(servicio.getId(), 1);
-
-        ServicioListaPrecio precioRelacion = ServicioListaPrecio.builder()
-                .id(pk)
-                .precio(form.getPrecio())
-                .servicio(servicio)
-                .listaPrecio(ListaPrecio.builder().id(1).build()) // Referencia dummy a la lista 1
-                .build();
-
-        precioRepo.save(precioRelacion);
-
-        redirectAttrs.addFlashAttribute("mensajeExito", "¡Servicio/Paquete registrado correctamente!");
-        return "redirect:/servicios/alta";
-    }
-    // 1. Ver lista de servicios
-    @GetMapping("/lista")
+    // 1. EL HUB: Lista de Servicios (Índice)
+    @GetMapping
     public String listarServicios(Model model) {
-        model.addAttribute("servicios", servicioRepo.findAll()); // Trae activos e inactivos
+        model.addAttribute("servicios", servicioRepo.findAll());
         return "servicios/lista";
     }
 
-    // 2. Cambiar estado (Activar/Desactivar oferta)
+    // 2. Formulario de Alta
+    @GetMapping("/alta")
+    public String mostrarFormAlta(Model model) {
+        // Enviamos un objeto servicio vacío y un precio en 0
+        model.addAttribute("servicio", new Servicio());
+        model.addAttribute("precio", 0);
+        return "servicios/alta";
+    }
+
+    // 3. Guardar Nuevo Servicio
+    // Recibimos los campos sueltos o el objeto Servicio para evitar errores con DTOs internos
+    @PostMapping("/guardar")
+    public String guardarServicio(@ModelAttribute Servicio servicio,
+                                  @RequestParam("precio") Integer precioInput,
+                                  RedirectAttributes ra) {
+
+        // A. Guardar Servicio Base
+        servicio.setActivo(1); // Nace activo
+        Servicio guardado = servicioRepo.save(servicio);
+
+        // B. Guardar Precio Inicial (Lista 1 por defecto)
+        ServicioListaPrecioPK pk = new ServicioListaPrecioPK(guardado.getId(), 1);
+
+        ServicioListaPrecio precioObj = ServicioListaPrecio.builder()
+                .id(pk)
+                .precio(precioInput)
+                .servicio(guardado)
+                .listaPrecio(ListaPrecio.builder().id(1).build()) // Referencia a Lista 1
+                .build();
+
+        precioRepo.save(precioObj);
+
+        ra.addFlashAttribute("mensajeExito", "Paquete creado correctamente.");
+        return "redirect:/servicios"; // Regresa a la LISTA
+    }
+
+    // 4. Activar/Desactivar
     @PostMapping("/cambiar-estado")
-    public String cambiarEstadoServicio(@RequestParam Integer id, RedirectAttributes ra) {
-        var servicioOpt = servicioRepo.findById(id);
-        if (servicioOpt.isPresent()) {
-            var servicio = servicioOpt.get();
-
-            // Invertir estado: Si es 1 pasa a 0, si es 0 pasa a 1
-            int nuevoEstado = (servicio.getActivo() == 1) ? 0 : 1;
-            servicio.setActivo(nuevoEstado);
-
-            servicioRepo.save(servicio);
-
-            String msj = (nuevoEstado == 1) ? "Servicio reactivado." : "Servicio desactivado (ya no aparecerá al agendar).";
-            ra.addFlashAttribute("mensajeExito", msj);
-        }
-        return "redirect:/servicios/lista";
+    public String cambiarEstado(@RequestParam Integer id, RedirectAttributes ra) {
+        servicioRepo.findById(id).ifPresent(s -> {
+            // Toggle: Si es 1 -> 0, si es 0 -> 1
+            int estado = (s.getActivo() != null && s.getActivo() == 1) ? 0 : 1;
+            s.setActivo(estado);
+            servicioRepo.save(s);
+        });
+        ra.addFlashAttribute("mensajeExito", "Estado actualizado.");
+        return "redirect:/servicios";
     }
 }

@@ -50,7 +50,7 @@ public class EstablecimientoController {
         // 3. Guardar Sucursal
         Sucursal suc = Sucursal.builder()
                 .establecimiento(est)
-                .nombre(dto.getNombreSucursal())
+                .nombre(dto.getNombre())
                 .ubicacion(punto)
                 .build();
 
