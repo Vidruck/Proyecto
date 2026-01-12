@@ -37,7 +37,7 @@ public class CitaController {
     public String verMisCitas(HttpSession session, Model model) {
         Persona persona = (Persona) session.getAttribute("persona");
         if (persona == null) return "redirect:/";
-        model.addAttribute("citas", citaRepository.findByIdPersonaOrderByIdDesc(persona.getId()));
+        model.addAttribute("citas", citaService.consultarCitasPorUsuario(persona.getId()));
         return "citas/index";
     }
 

@@ -26,7 +26,7 @@ public class CitaBs implements CitaService {
     @Autowired
     private BloqueCitaRepository bloqueRepo;
     @Autowired
-    private CitaRepository citaRepo;
+    private CitaRepository citaRepo; // Instancia inyectada del repositorio
     @Autowired
     private ServicioRepository servicioRepo;
     @Autowired
@@ -35,17 +35,21 @@ public class CitaBs implements CitaService {
     private static final Integer SUCURSAL_DEFAULT = 1;
     private static final Integer LISTA_PRECIO_DEFAULT = 1;
 
+    /**
+     * Calcula los horarios libres restando los bloques ocupados al horario laboral.
+     */
     @Override
     public List<LocalTime> obtenerHorariosDisponibles(LocalDate fecha, Integer idServicio, Integer idEmpleadoPreferido) {
         var servicio = servicioRepo.findById(idServicio).orElseThrow();
         int duracion = servicio.getDuracion();
 
         List<LocalTime> horarios = new ArrayList<>();
-        LocalTime inicioDia = LocalTime.of(9, 0);
-        LocalTime finDia = LocalTime.of(18, 0);
+        LocalTime inicioDia = LocalTime.of(9, 0); // Abre a las 9:00 AM
+        LocalTime finDia = LocalTime.of(18, 0);   // Cierra a las 6:00 PM
         LocalDateTime inicioRango = fecha.atTime(inicioDia);
         LocalDateTime finRango = fecha.atTime(finDia);
 
+        // Traemos todos los bloques ocupados de ese día
         List<BloqueCita> bloquesOcupados = bloqueRepo.encontrarBloquesEnRango(inicioRango, finRango);
 
         LocalTime pivote = inicioDia;
@@ -54,17 +58,18 @@ public class CitaBs implements CitaService {
             LocalDateTime momentoCita = fecha.atTime(pivote);
 
             for (BloqueCita b : bloquesOcupados) {
+                // Si el bloque coincide con el horario que evaluamos
                 if (b.getFechaInicio().equals(momentoCita)) {
-                    // Lógica de preferencia de barbero
+                    // Lógica de preferencia:
                     if (idEmpleadoPreferido != null) {
-                        // Si el cliente quiere a uno específico, revisamos si ESE bloque es de él
+                        // Si el cliente quiere a Juan, verificamos si este bloque pertenece a Juan
                         var citaOriginal = citaRepo.findById(b.getIdCita()).orElse(null);
                         if (citaOriginal != null && citaOriginal.getIdEmpleado().equals(idEmpleadoPreferido)) {
                             horaOcupada = true;
                             break;
                         }
                     } else {
-                        // Si no elige, cualquier bloque en esa hora cuenta como ocupado (modelo simple)
+                        // Si es "Cualquiera", asumimos ocupado por simplicidad (v1.0)
                         horaOcupada = true;
                         break;
                     }
@@ -79,6 +84,9 @@ public class CitaBs implements CitaService {
         return horarios;
     }
 
+    /**
+     * Guarda la Cita y bloquea el horario en la agenda.
+     */
     @Override
     public void agendarCita(AgendarCitaDto dto, Usuario usuario) {
 
@@ -86,15 +94,14 @@ public class CitaBs implements CitaService {
 
         // 1. DETERMINAR EL EMPLEADO
         if (dto.getIdEmpleado() != null) {
-            // Caso A: El cliente eligió a alguien
             idEmpleadoFinal = dto.getIdEmpleado();
         } else {
-            // Caso B: Le da igual ("Cualquiera"), asignamos al primero que encontremos
+            // Asignación automática al primero disponible (Simplificado)
             idEmpleadoFinal = empleadoRepo.findAll()
                     .stream()
                     .findFirst()
-                    .map(empleado -> empleado.getId())
-                    .orElseThrow(() -> new RuntimeException("No hay empleados disponibles para asignar."));
+                    .map(e -> e.getId())
+                    .orElseThrow(() -> new RuntimeException("No hay empleados disponibles."));
         }
 
         // 2. Guardar Cita
@@ -109,7 +116,7 @@ public class CitaBs implements CitaService {
 
         nuevaCita = citaRepo.save(nuevaCita);
 
-        // 3. Guardar Bloque de Tiempo
+        // 3. Guardar Bloque de Tiempo (Para que nadie más lo tome)
         var servicio = servicioRepo.findById(dto.getIdServicio()).orElseThrow();
         LocalDateTime inicio = dto.getFecha().atTime(dto.getHora());
         LocalDateTime fin = inicio.plusMinutes(servicio.getDuracion());
@@ -122,5 +129,14 @@ public class CitaBs implements CitaService {
                 .build();
 
         bloqueRepo.save(bloque);
+    }
+
+    /**
+     * NUEVO MÉTODO: Consulta citas donde el usuario es Cliente O Empleado.
+     */
+    @Override
+    public List<Cita> consultarCitasPorUsuario(Integer idUsuario) {
+        // Usamos la instancia inyectada 'citaRepo', NO la clase estática
+        return citaRepo.findMisCitas(idUsuario);
     }
 }
