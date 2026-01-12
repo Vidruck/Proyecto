@@ -1,78 +1,54 @@
+/* ========================================================= */
+/* 1. VARIABLES Y TEMAS (Color Palette)                      */
+/* ========================================================= */
 :root {
-    /* --- VARIABLES BASE (MODO CLARO / LIGHT - Catppuccin Latte) --- */
-    --adwaita-blue: #1e66f5;
-    /* Blue */
-    --adwaita-blue-dark: #1b52c9;
-    /* Darker Blue custom */
+    /* --- MODO CLARO (Default - Catppuccin Latte) --- */
+    --adwaita-blue: #1e66f5;       /* Azul Primario */
+    --adwaita-blue-dark: #1b52c9;  /* Azul Hover */
 
-    /* Fondos y Textos (Default Light - Latte) */
-    --bg-color: #eff1f5;
-    /* Base */
-    --card-bg: #ffffff;
-    /* Surface0ish/White */
-    --text-color: #4c4f69;
-    /* Text */
-    --text-muted: #6c6f85;
-    /* Subtext0 */
-    --border-color: #ccd0da;
-    /* Surface0 */
+    --bg-color: #eff1f5;           /* Fondo Pantalla */
+    --card-bg: #ffffff;            /* Fondo Tarjetas */
 
-    /* Inputs */
-    --input-bg: #e6e9ef;
-    /* Mantle */
-    --input-text: #4c4f69;
-    /* Text */
+    --text-color: #4c4f69;         /* Texto Principal (Gris Oscuro) */
+    --text-muted: #6c6f85;         /* Texto Secundario */
+
+    --border-color: #ccd0da;       /* Bordes */
+
+    --input-bg: #e6e9ef;           /* Fondo Inputs */
+    --input-text: #4c4f69;         /* Texto Inputs */
     --input-focus-shadow: rgba(30, 102, 245, 0.2);
 
-    /* Errores */
-    --error-color: #d20f39;
-    /* Red */
-
-    /* IPN Colors */
-    --ipn-guinda: #e64553;
-    /* Maroon */
+    --error-color: #d20f39;        /* Rojo Error */
+    --ipn-guinda: #e64553;         /* Color IPN */
 }
 
-/* --- DETECCIÓN AUTOMÁTICA Y MANUAL DE MODO OSCURO --- */
+/* --- MODO OSCURO (Auto detectado y manual) --- */
 @media (prefers-color-scheme: dark) {
     :root {
-        /* Redefinimos los colores para Catppuccin Mocha */
+        /* Catppuccin Mocha Overrides */
         --bg-color: #1e1e2e;
-        /* Base */
-        /* Gris muy oscuro, típico de GNOME */
         --card-bg: #313244;
-        /* Surface0 */
-        /* Tarjetas un poco más claras */
-        --text-color: #cdd6f4;
-        /* Text */
-        /* Texto blanco */
-        --text-muted: #a6adc8;
-        /* Subtext0 */
-        /* Texto secundario gris claro */
-        --border-color: #45475a;
-        /* Surface1 */
-        /* Bordes oscuros sutiles */
 
-        /* Inputs Dark */
+        --text-color: #cdd6f4;     /* Texto Principal (Blanco Humo) */
+        --text-muted: #bac2de;     /* Texto Secundario (Gris Claro Brillante) */
+
+        --border-color: #45475a;
+
         --input-bg: #45475a;
-        /* Surface1 */
         --input-text: #cdd6f4;
-        /* Text */
         --input-focus-shadow: rgba(137, 180, 250, 0.4);
 
-        /* IPN Colors Dark Mode */
-        --ipn-guinda: #eba0ac;
-        /* Maroon */
+        --ipn-guinda: #eba0ac;     /* IPN adaptado a oscuro */
     }
 }
 
-/* Soporte para cambio manual (Bootstrap o clase custom) */
+/* Soporte para forzar modo oscuro vía clase o atributo */
 [data-bs-theme="dark"],
 .dark-mode {
     --bg-color: #1e1e2e;
     --card-bg: #313244;
     --text-color: #cdd6f4;
-    --text-muted: #a6adc8;
+    --text-muted: #bac2de;
     --border-color: #45475a;
     --input-bg: #45475a;
     --input-text: #cdd6f4;
@@ -80,6 +56,9 @@
     --ipn-guinda: #eba0ac;
 }
 
+/* ========================================================= */
+/* 2. ESTILOS BASE Y GLOBALES                                */
+/* ========================================================= */
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -87,43 +66,48 @@ body {
     min-height: 100vh;
     margin: 0;
     transition: background-color 0.3s ease, color 0.3s ease;
-    display: block;
 }
+
 body.login-layout {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-/* --- AJUSTES PARA EL LOGO EN NAVBAR --- */
-.navbar-logo {
-    height: 40px; /* Tamaño del logo */
-    width: auto;
-    margin-right: 10px;
-    border-radius: 6px; /* Opcional: bordes redondeados suavemente */
-}
-/* Asegurar que el contenido del dashboard no quede oculto tras la navbar */
-.dashboard-container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-}
-/* Override Bootstrap labels */
-.form-label,
-label {
-    color: var(--text-color);
-}
 
-/* Tarjeta estilo Adwaita */
+/* Enlaces */
+a {
+    color: var(--adwaita-blue);
+    text-decoration: none;
+    font-weight: 600;
+}
+a:hover { text-decoration: underline; }
+
+/* Forzar colores de texto globales para sobreescribir Bootstrap */
+.text-muted { color: var(--text-muted) !important; }
+.form-label, label { color: var(--text-color); }
+h1, h2, h3, h4, h5, h6 { color: var(--text-color); }
+
+/* ========================================================= */
+/* 3. COMPONENTES DE UI (Tarjetas, Inputs, Botones)          */
+/* ========================================================= */
+
+/* --- Tarjetas --- */
 .card-custom {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    /* Sombra un poco más marcada */
     overflow: hidden;
     transition: background-color 0.3s ease, border-color 0.3s ease;
+    color: var(--text-color) !important; /* Asegura texto visible siempre */
 }
 
-/* Cabecera */
+.card-title, .card-custom h5 {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text-color) !important;
+}
+
 .card-header-custom {
     background-color: var(--card-bg);
     color: var(--text-color);
@@ -136,25 +120,17 @@ label {
     font-size: 1.5rem;
     font-weight: 800;
     margin: 0;
-    color: var(--text-color);
 }
 
-.text-muted {
-    color: var(--text-muted) !important;
-    /* Forzamos el color muted de nuestra variable */
-}
-
-/* Inputs reactivos al tema */
+/* --- Inputs --- */
 .form-control {
     background-color: var(--input-bg);
     color: var(--input-text);
     border: 1px solid transparent;
-    /* Sin borde por defecto estilo Adwaita */
     border-radius: 8px;
     transition: all 0.2s ease;
 }
 
-/* Fix para que el texto dentro del input no se pierda en modo oscuro */
 .form-control::placeholder {
     color: var(--text-muted);
     opacity: 0.7;
@@ -162,13 +138,12 @@ label {
 
 .form-control:focus {
     background-color: var(--card-bg);
-    /* Al enfocar se pone del color de la tarjeta */
     border-color: var(--adwaita-blue);
     box-shadow: 0 0 0 3px var(--input-focus-shadow);
     color: var(--text-color);
 }
 
-/* Botones */
+/* --- Botones Especiales (IPN) --- */
 .btn-ipn {
     background-color: var(--adwaita-blue);
     color: white;
@@ -177,36 +152,56 @@ label {
     padding: 10px 20px;
     border: none;
 }
-
 .btn-ipn:hover {
     background-color: var(--adwaita-blue-dark);
     color: white;
 }
 
-/* Enlaces */
-a {
-    color: var(--adwaita-blue);
-    text-decoration: none;
-    font-weight: 600;
+/* --- Botones Outline (Bootstrap Override Universal) --- */
+/* Esto arregla el "Blanco sobre Blanco" y "Gris sobre Gris" */
+.btn-outline-secondary,
+.btn-outline-primary,
+.btn-outline-success,
+.btn-outline-warning,
+.btn-outline-info,
+.btn-outline-danger,
+.btn-outline-dark {
+    /* Estado Normal: Usa el color de texto del tema (Oscuro en Light, Claro en Dark) */
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+    background-color: transparent;
+    opacity: 0.9;
 }
 
-a:hover {
-    text-decoration: underline;
+/* Estado Hover: Se llena de color, forzamos texto blanco o legible */
+.btn-outline-secondary:hover {
+    background-color: var(--text-color) !important;
+    color: var(--bg-color) !important; /* Texto inverso al fondo */
+    border-color: var(--text-color) !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-success:hover,
+.btn-outline-warning:hover,
+.btn-outline-info:hover,
+.btn-outline-danger:hover {
+    color: #fff !important; /* Texto blanco al rellenarse */
+    opacity: 1;
+}
+
+/* Arreglo para iconos dentro de botones */
+.btn-outline-secondary i {
+    color: inherit;
 }
 
 /* Validaciones */
-.form-label.required::after {
-    content: " *";
-    color: var(--error-color);
-}
+.form-label.required::after { content: " *"; color: var(--error-color); }
+.invalid-feedback { color: var(--error-color); font-size: 0.85em; }
 
-.invalid-feedback {
-    color: var(--error-color);
-    font-size: 0.85em;
-}
-/* --- NUEVOS ESTILOS PARA EL DASHBOARD (welcome.html) --- */
+/* ========================================================= */
+/* 4. DASHBOARD & NAVBAR (welcome.html)                      */
+/* ========================================================= */
 
-/* Navbar estilo Adwaita/Glassy */
 .navbar-custom {
     background-color: var(--card-bg);
     border-bottom: 1px solid var(--border-color);
@@ -216,8 +211,15 @@ a:hover {
 
 .navbar-brand {
     font-weight: 800;
-    color: var(--text-color) !important;
+    color: var(--text-color) !important; /* Siempre visible */
     font-size: 1.25rem;
+}
+
+.navbar-logo {
+    height: 40px;
+    width: auto;
+    margin-right: 10px;
+    border-radius: 6px;
 }
 
 .user-profile-text {
@@ -226,27 +228,33 @@ a:hover {
     margin-right: 1rem;
 }
 
-/* Contenedor de bienvenida */
+.dashboard-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* Encabezado de Bienvenida */
 .welcome-header {
     margin-bottom: 2rem;
     text-align: left;
 }
-.welcome-header h2 {
-    font-weight: 700;
-    color: var(--text-color);
+.welcome-header h1,
+.welcome-header h2,
+.welcome-header span {
+    font-weight: 800;
+    color: var(--text-color) !important; /* Fix blanco sobre blanco */
 }
 .welcome-header p {
-    color: var(--text-muted);
+    color: var(--text-muted) !important;
 }
 
-/* Grid de Tarjetas de Acción */
+/* Grid de Tarjetas Dashboard */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
 }
 
-/* Tarjeta de Dashboard */
 .dash-card {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -255,7 +263,7 @@ a:hover {
     text-align: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     cursor: pointer;
-    text-decoration: none; /* Por si es un <a> */
+    text-decoration: none;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -287,7 +295,3 @@ a:hover {
     color: var(--text-muted);
     line-height: 1.4;
 }
-
-/* Variación para acciones peligrosas o secundarias */
-.dash-card.danger:hover .dash-icon { color: var(--error-color); }
-.dash-card.danger:hover { border-color: var(--error-color); }

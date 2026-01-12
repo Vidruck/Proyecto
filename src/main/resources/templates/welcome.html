@@ -13,18 +13,23 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-custom mb-4">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="#">
-            <i class="bi bi-scissors"></i> Barbería UPIICSA
-        </a>
-        <div class="d-flex align-items-center">
-            <span class="text-white me-3 d-none d-md-block">
-                Hola, <strong th:text="${session.persona.nombre}">Usuario</strong>
-            </span>
-            <a href="/logout" class="btn btn-outline-light btn-sm">
-                <i class="bi bi-box-arrow-right"></i> Salir
-            </a>
+    <div class="d-flex align-items-center gap-3">
+
+        <div class="text-end d-none d-md-block" style="line-height: 1.2;">
+        <span class="d-block fw-bold text-primary" style="font-size: 1rem;"
+              th:text="${session.persona.nombre} + ' ' + ${session.persona.primerApellido}">
+            Usuario
+        </span>
+            <small class="text-muted" style="font-size: 0.85rem;"
+                   th:text="${session.persona.usuario.idRol == 1 ? 'Administrador' : (session.persona.usuario.idRol == 2 ? 'Empleado' : 'Cliente')}">
+                Rol
+            </small>
         </div>
+
+        <a href="/logout" class="btn btn-danger btn-sm d-flex align-items-center gap-2 shadow-sm">
+            <i class="bi bi-box-arrow-right text-white"></i>
+            <span class="text-white fw-bold">Salir</span>
+        </a>
     </div>
 </nav>
 
