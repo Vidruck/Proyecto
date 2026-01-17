@@ -8,13 +8,17 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * Entidad que define un servicio ofrecido por el establecimiento.
+ * Incluye nombre, descripción y duración estimada.
+ */
 @Entity
 @Table(name = "cci01_servicio")
 public class Servicio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_servicio")
+    @Column(name = "id_servicio")
     private Integer id;
 
     @Column(name = "tx_nombre")

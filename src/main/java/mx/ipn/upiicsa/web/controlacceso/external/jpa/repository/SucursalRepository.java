@@ -4,7 +4,11 @@ import mx.ipn.upiicsa.web.controlacceso.internal.bs.entity.Sucursal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Repositorio JPA para gestionar la entidad {@link Sucursal}.
+ * Provee operaciones CRUD estándar para administrar las sucursales.
+ *
+ */
 @Repository
-
 public interface SucursalRepository extends JpaRepository<Sucursal, Integer> {
 }

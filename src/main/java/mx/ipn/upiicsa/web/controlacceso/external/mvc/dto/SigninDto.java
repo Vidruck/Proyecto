@@ -14,6 +14,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Setter
 @Getter
+/**
+ * DTO para el registro de nuevos usuarios (Signin).
+ * Realiza las validaciones necesarias antes de crear la entidad
+ * {@link mx.ipn.upiicsa.web.controlacceso.internal.bs.entity.Signin}.
+ *
+ */
 public class SigninDto {
     @NotNull(message = "Favor de proporcionar el genero")
     private Integer idGenero;

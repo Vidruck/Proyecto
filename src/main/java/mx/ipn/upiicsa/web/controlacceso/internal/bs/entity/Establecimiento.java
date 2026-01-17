@@ -7,6 +7,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * Entidad que representa un establecimiento o negocio principal.
+ */
 @Entity
 @Table(name = "tce01_establecimiento")
 public class Establecimiento {

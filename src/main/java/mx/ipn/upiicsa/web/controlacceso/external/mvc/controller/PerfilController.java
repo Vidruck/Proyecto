@@ -21,6 +21,12 @@ import java.security.MessageDigest;
 import java.util.Base64;
 import java.util.Optional;
 
+/**
+ * Controlador MVC para gestionar el perfil del usuario.
+ * Permite visualizar y editar la información personal y credenciales.
+ * Mapea a la ruta "/perfil".
+ *
+ */
 @Controller
 @RequestMapping("/perfil")
 public class PerfilController {
@@ -30,10 +36,19 @@ public class PerfilController {
     @Autowired
     private UsuarioJpaRepository usuarioRepo;
 
+    /**
+     * Muestra la vista de detalle del perfil.
+     * Carga los datos actuales del usuario en el DTO.
+     *
+     * @param session Sesión actual.
+     * @param model   Modelo para el DTO.
+     * @return Vista "perfil/detalle".
+     */
     @GetMapping
     public String verPerfil(HttpSession session, Model model) {
         Persona personaSesion = (Persona) session.getAttribute("persona");
-        if (personaSesion == null) return "redirect:/";
+        if (personaSesion == null)
+            return "redirect:/";
 
         // Pre-llenamos el DTO con los datos actuales
         PerfilDto dto = new PerfilDto();
@@ -47,13 +62,24 @@ public class PerfilController {
         return "perfil/detalle";
     }
 
+    /**
+     * Actualiza la información del perfil del usuario.
+     * Modifica los datos personales y, opcionalmente, la contraseña.
+     * Actualiza también la sesión actual para reflejar los cambios.
+     *
+     * @param dto           DTO con los nuevos datos.
+     * @param session       Sesión actual.
+     * @param redirectAttrs Mensajes flash.
+     * @return Redirección a la vista de perfil.
+     */
     @PostMapping("/actualizar")
     public String actualizar(@ModelAttribute PerfilDto dto,
-                             HttpSession session,
-                             RedirectAttributes redirectAttrs) {
+            HttpSession session,
+            RedirectAttributes redirectAttrs) {
 
         Persona personaSesion = (Persona) session.getAttribute("persona");
-        if (personaSesion == null) return "redirect:/";
+        if (personaSesion == null)
+            return "redirect:/";
 
         // 1. Actualizar Datos Personales en BD
         Optional<PersonaJpa> personaOpt = personaRepo.findById(personaSesion.getId());

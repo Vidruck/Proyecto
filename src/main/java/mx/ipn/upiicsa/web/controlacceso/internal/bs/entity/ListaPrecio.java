@@ -8,6 +8,11 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * Entidad que representa una lista de precios, permitiendo variar los costos
+ * de los servicios según diferentes criterios (temporada, tipo de cliente,
+ * etc.).
+ */
 @Entity
 @Table(name = "tci03_lista_precio")
 public class ListaPrecio {

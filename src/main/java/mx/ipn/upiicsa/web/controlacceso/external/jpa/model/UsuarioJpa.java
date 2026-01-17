@@ -11,6 +11,13 @@ import mx.ipn.upiicsa.web.controlacceso.internal.bs.entity.Usuario;
 @Getter
 @Entity
 @Table(name = "tca02_usuario")
+/**
+ * Entidad JPA que representa las credenciales de acceso y estado de un usuario
+ * del sistema.
+ * Mapea a la tabla "tca02_usuario".
+ * Vincula una Persona con un Rol específico.
+ *
+ */
 public class UsuarioJpa {
     @Id
     @Column(name = "id_usuario")

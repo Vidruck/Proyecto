@@ -20,18 +20,32 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Base64;
 
+/**
+ * Controlador MVC para la administración de empleados (Barberos).
+ * Permite dar de alta nuevos empleados, creando automáticamente su usuario y
+ * asignándolos a una sucursal.
+ * Mapea a la ruta "/empleados".
+ *
+ */
 @Controller
 @RequestMapping("/empleados")
 public class EmpleadoController {
 
     @Autowired
     private SucursalRepository sucursalRepo;
-    // @Autowired private PersonaJpaRepository personaRepo; // <-- ELIMINAR O COMENTAR
+    // @Autowired private PersonaJpaRepository personaRepo; // <-- ELIMINAR O
+    // COMENTAR
     @Autowired
     private UsuarioJpaRepository usuarioRepo;
     @Autowired
     private EmpleadoRepository empleadoRepo;
 
+    /**
+     * Muestra el formulario para dar de alta un nuevo empleado.
+     *
+     * @param model Modelo para enviar la lista de sucursales disponibles.
+     * @return Vista "empleados/alta".
+     */
     @GetMapping("/alta")
     public String mostrarAlta(Model model) {
         model.addAttribute("empleadoDto", new AltaEmpleadoDto());
@@ -39,6 +53,15 @@ public class EmpleadoController {
         return "empleados/alta";
     }
 
+    /**
+     * Procesa el guardado de un nuevo empleado.
+     * Realiza una transacción lógica creando Persona, Empleado y Usuario.
+     * Encripta la contraseña usando SHA-512.
+     *
+     * @param dto           DTO con los datos del empleado.
+     * @param redirectAttrs Atributos para mensajes flash.
+     * @return Redirección a la vista de alta con mensaje de éxito.
+     */
     @PostMapping("/guardar")
     public String guardar(@ModelAttribute AltaEmpleadoDto dto, RedirectAttributes redirectAttrs) {
 
@@ -70,7 +93,7 @@ public class EmpleadoController {
         String passHash = encriptar(dto.getPassword());
         Usuario usuario = Usuario.builder()
                 .id(idGenerado) // Mismo ID
-                .idRol(2)       // Empleado
+                .idRol(2) // Empleado
                 .login(dto.getEmail())
                 .password(passHash)
                 .activo(true)

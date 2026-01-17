@@ -8,10 +8,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * Definición del servicio para la gestión de citas.
+ * Provee métodos para consultar disponibilidad, agendar y listar citas.
+ */
 public interface CitaService {
   List<LocalTime> obtenerHorariosDisponibles(LocalDate fecha, Integer id_servicio, Integer idEmpleadoPreferido);
-  void agendarCita(AgendarCitaDto dto, Usuario usuario);
 
+  void agendarCita(AgendarCitaDto dto, Usuario usuario);
 
   List<Cita> consultarCitasPorUsuario(Integer idUsuario);
 }

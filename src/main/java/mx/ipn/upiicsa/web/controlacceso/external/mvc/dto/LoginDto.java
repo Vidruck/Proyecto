@@ -9,6 +9,11 @@ import lombok.*;
 @NoArgsConstructor
 @Setter
 @Getter
+/**
+ * DTO para la captura de credenciales en el formulario de inicio de sesión.
+ * Incluye validaciones básicas de formato.
+ *
+ */
 public class LoginDto {
     @NotBlank(message = "Favor de proporcionar el nombre de usuario")
     @Email(message = "El nombre de usuario es incorrecto, favor de proporcionar un correo electrónico")

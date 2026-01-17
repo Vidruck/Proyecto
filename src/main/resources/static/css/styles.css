@@ -1,297 +1,379 @@
+zs
+
 /* ========================================================= */
-/* 1. VARIABLES Y TEMAS (Color Palette)                      */
+/* 1. VARIABLES Y TEMAS (Catppuccin Palette)                 */
 /* ========================================================= */
 :root {
-    /* --- MODO CLARO (Default - Catppuccin Latte) --- */
-    --adwaita-blue: #1e66f5;       /* Azul Primario */
-    --adwaita-blue-dark: #1b52c9;  /* Azul Hover */
+    /* --- MODO CLARO (Catppuccin Latte) --- */
+    /* Colores Base - Pastel y suaves */
+    --ctp-base: #eff1f5;
+    /* Fondo Principal */
+    --ctp-mantle: #e6e9ef;
+    /* Fondo Secundario */
+    --ctp-surface0: #ccd0da;
+    /* Bordes / Fondos Input */
+    --ctp-surface1: #bcc0cc;
+    /* Hover en cards */
+    --ctp-overlay0: #9ca0b0;
+    /* Texto deshabilitado */
 
-    --bg-color: #eff1f5;           /* Fondo Pantalla */
-    --card-bg: #ffffff;            /* Fondo Tarjetas */
+    /* Texto */
+    --ctp-text: #4c4f69;
+    /* Texto Principal */
+    --ctp-subtext1: #5c5f77;
+    /* Texto Secundario/Muted */
 
-    --text-color: #4c4f69;         /* Texto Principal (Gris Oscuro) */
-    --text-muted: #6c6f85;         /* Texto Secundario */
+    /* Acentos */
+    --ctp-blue: #1e66f5;
+    /* Primario */
+    --ctp-red: #d20f39;
+    /* Error */
+    --ctp-green: #40a02b;
+    /* Éxito */
+    --ctp-peach: #fe640b;
+    /* Advertencia */
+    --ctp-maroon: #ea76cb;
+    /* IPN/Acento especial (Usando Pink/Maroon pastel) */
 
-    --border-color: #ccd0da;       /* Bordes */
+    /* Variables Funcionales */
+    --bg-color: var(--ctp-base);
+    --card-bg: #ffffff;
+    /* Blanco puro para cards en Latte queda mejor que Surface */
+    --text-color: var(--ctp-text);
+    --text-muted: var(--ctp-subtext1);
+    --border-color: var(--ctp-surface0);
 
-    --input-bg: #e6e9ef;           /* Fondo Inputs */
-    --input-text: #4c4f69;         /* Texto Inputs */
-    --input-focus-shadow: rgba(30, 102, 245, 0.2);
+    --input-bg: var(--ctp-mantle);
+    --input-text: var(--ctp-text);
+    --input-placeholder: var(--ctp-overlay0);
 
-    --error-color: #d20f39;        /* Rojo Error */
-    --ipn-guinda: #e64553;         /* Color IPN */
+    --primary-color: var(--ctp-blue);
+    --primary-hover: #174bba;
+    /* Un poco más oscuro */
+
+    --ipn-guinda: var(--ctp-maroon);
+    /* Adaptado a estilo pastel */
+
+    --focus-shadow: rgba(30, 102, 245, 0.25);
 }
 
-/* --- MODO OSCURO (Auto detectado y manual) --- */
+/* --- MODO OSCURO (Catppuccin Frappe - Softer than Mocha) --- */
 @media (prefers-color-scheme: dark) {
     :root {
-        /* Catppuccin Mocha Overrides */
-        --bg-color: #1e1e2e;
-        --card-bg: #313244;
+        /* Base Dark (Frappe) - No es negro puro, es gris azulado oscuro */
+        --ctp-base: #303446;
+        --ctp-mantle: #292c3c;
+        --ctp-surface0: #414559;
+        /* Elementos UI (Cards) */
+        --ctp-surface1: #51576d;
+        /* Inputs / Hovers */
+        --ctp-overlay0: #737994;
 
-        --text-color: #cdd6f4;     /* Texto Principal (Blanco Humo) */
-        --text-muted: #bac2de;     /* Texto Secundario (Gris Claro Brillante) */
+        /* Texto - Blanco Humo 'Hazy' */
+        --ctp-text: #c6d0f5;
+        --ctp-subtext1: #a5adce;
 
-        --border-color: #45475a;
+        /* Acentos Pastel */
+        --ctp-blue: #8caaee;
+        /* Azul suave */
+        --ctp-red: #e78284;
+        --ctp-green: #a6d189;
+        --ctp-peach: #ef9f76;
+        --ctp-maroon: #f4b8e4;
 
-        --input-bg: #45475a;
-        --input-text: #cdd6f4;
-        --input-focus-shadow: rgba(137, 180, 250, 0.4);
+        /* Mapeo funcional */
+        --bg-color: var(--ctp-base);
+        --card-bg: var(--ctp-mantle);
+        /* Las cards usan Mantle o Surface */
+        --text-color: var(--ctp-text);
+        --text-muted: var(--ctp-subtext1);
+        --border-color: var(--ctp-surface0);
 
-        --ipn-guinda: #eba0ac;     /* IPN adaptado a oscuro */
+        --input-bg: var(--ctp-surface0);
+        /* Input destaca sobre card-bg (mantle) */
+        --input-text: var(--ctp-text);
+        --input-placeholder: var(--ctp-overlay0);
+
+        --primary-color: var(--ctp-blue);
+        --primary-hover: #85c1dc;
+        /* Sapphire para hover */
+
+        --ipn-guinda: var(--ctp-maroon);
+
+        --focus-shadow: rgba(140, 170, 238, 0.25);
     }
 }
 
-/* Soporte para forzar modo oscuro vía clase o atributo */
+/* Forzar modo oscuro manualmente */
 [data-bs-theme="dark"],
 .dark-mode {
-    --bg-color: #1e1e2e;
-    --card-bg: #313244;
-    --text-color: #cdd6f4;
-    --text-muted: #bac2de;
-    --border-color: #45475a;
-    --input-bg: #45475a;
-    --input-text: #cdd6f4;
-    --input-focus-shadow: rgba(137, 180, 250, 0.4);
-    --ipn-guinda: #eba0ac;
+    --bg-color: #303446;
+    /* Frappe Base */
+    --card-bg: #292c3c;
+    /* Frappe Mantle */
+    --text-color: #c6d0f5;
+    /* Frappe Text */
+    --text-muted: #a5adce;
+    --border-color: #414559;
+    --input-bg: #414559;
+    --input-text: #c6d0f5;
+    --input-placeholder: #737994;
+    --primary-color: #8caaee;
+    --primary-hover: #85c1dc;
+    --ipn-guinda: #f4b8e4;
+    --focus-shadow: rgba(140, 170, 238, 0.25);
 }
 
 /* ========================================================= */
-/* 2. ESTILOS BASE Y GLOBALES                                */
+/* 2. ESTILOS GLOBALES Y TIPOGRAFÍA                          */
 /* ========================================================= */
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     margin: 0;
     transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    /* Texto más nítido */
 }
 
+/* Layout de Login Centrado */
 body.login-layout {
     display: flex;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(135deg, var(--bg-color) 0%, var(--card-bg) 100%);
 }
 
 /* Enlaces */
 a {
-    color: var(--adwaita-blue);
+    color: var(--primary-color);
     text-decoration: none;
     font-weight: 600;
+    transition: opacity 0.2s;
 }
-a:hover { text-decoration: underline; }
 
-/* Forzar colores de texto globales para sobreescribir Bootstrap */
-.text-muted { color: var(--text-muted) !important; }
-.form-label, label { color: var(--text-color); }
-h1, h2, h3, h4, h5, h6 { color: var(--text-color); }
+a:hover {
+    opacity: 0.8;
+    text-decoration: none;
+}
+
+/* Sobreescrituras de Bootstrap Claves */
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.form-label,
+label,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--text-color);
+}
 
 /* ========================================================= */
-/* 3. COMPONENTES DE UI (Tarjetas, Inputs, Botones)          */
+/* 3. COMPONENTES DE UI (Modern & Pastel)                    */
 /* ========================================================= */
 
-/* --- Tarjetas --- */
+/* --- Tarjetas (Cards) --- */
 .card-custom {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    /* Bordes más redondeados */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     overflow: hidden;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    color: var(--text-color) !important; /* Asegura texto visible siempre */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    color: var(--text-color) !important;
 }
 
-.card-title, .card-custom h5 {
+.card-title {
     font-weight: 700;
-    letter-spacing: 0.5px;
-    color: var(--text-color) !important;
+    color: var(--text-color);
 }
 
 .card-header-custom {
-    background-color: var(--card-bg);
+    background-color: transparent;
+    /* Headers limpios */
     color: var(--text-color);
-    padding: 20px 20px 0 20px;
-    text-align: center;
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
     border-bottom: none;
+    text-align: center;
 }
 
 .card-header-custom h1 {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 800;
     margin: 0;
+    color: var(--primary-color) !important;
+    /* Título destacado con color primario */
 }
 
-/* --- Inputs --- */
+/* --- Inputs y Formularios --- */
 .form-control {
-    background-color: var(--input-bg);
-    color: var(--input-text);
-    border: 1px solid transparent;
-    border-radius: 8px;
-    transition: all 0.2s ease;
+    background-color: var(--input-bg) !important;
+    color: var(--input-text) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
 }
 
 .form-control::placeholder {
-    color: var(--text-muted);
-    opacity: 0.7;
+    color: var(--input-placeholder) !important;
+    opacity: 1;
+    /* Fix navegador */
 }
 
 .form-control:focus {
-    background-color: var(--card-bg);
-    border-color: var(--adwaita-blue);
-    box-shadow: 0 0 0 3px var(--input-focus-shadow);
-    color: var(--text-color);
+    background-color: var(--input-bg) !important;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px var(--focus-shadow);
+    color: var(--input-text) !important;
 }
 
-/* --- Botones Especiales (IPN) --- */
+/* Fix para autocompletado del navegador (Fondo azul/blanco feo) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--input-bg) inset !important;
+    -webkit-text-fill-color: var(--input-text) !important;
+}
+
+/* --- Botones --- */
 .btn-ipn {
-    background-color: var(--adwaita-blue);
-    color: white;
-    font-weight: 600;
-    border-radius: 8px;
-    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    /* Texto contraste (en Light es blanco, en Dark es oscuro base) */
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 0.6rem 1.5rem;
     border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
 }
+
 .btn-ipn:hover {
-    background-color: var(--adwaita-blue-dark);
-    color: white;
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12);
+    color: var(--bg-color);
 }
 
-/* --- Botones Outline (Bootstrap Override Universal) --- */
-/* Esto arregla el "Blanco sobre Blanco" y "Gris sobre Gris" */
-.btn-outline-secondary,
+/* Botones Outline - Fix de legibilidad */
 .btn-outline-primary,
-.btn-outline-success,
-.btn-outline-warning,
-.btn-outline-info,
-.btn-outline-danger,
-.btn-outline-dark {
-    /* Estado Normal: Usa el color de texto del tema (Oscuro en Light, Claro en Dark) */
-    color: var(--text-color) !important;
-    border-color: var(--border-color) !important;
-    background-color: transparent;
-    opacity: 0.9;
+.btn-outline-secondary,
+.btn-outline-danger {
+    color: var(--text-color);
+    border-color: var(--border-color);
+    background: transparent;
 }
 
-/* Estado Hover: Se llena de color, forzamos texto blanco o legible */
-.btn-outline-secondary:hover {
-    background-color: var(--text-color) !important;
-    color: var(--bg-color) !important; /* Texto inverso al fondo */
-    border-color: var(--text-color) !important;
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    border-color: var(--primary-color);
 }
 
-.btn-outline-primary:hover,
-.btn-outline-success:hover,
-.btn-outline-warning:hover,
-.btn-outline-info:hover,
 .btn-outline-danger:hover {
-    color: #fff !important; /* Texto blanco al rellenarse */
-    opacity: 1;
+    background-color: var(--ctp-red);
+    color: var(--bg-color);
+    border-color: var(--ctp-red);
 }
 
-/* Arreglo para iconos dentro de botones */
-.btn-outline-secondary i {
-    color: inherit;
+/* --- Validaciones --- */
+.invalid-feedback {
+    color: var(--ctp-red);
+    font-size: 0.85em;
 }
 
-/* Validaciones */
-.form-label.required::after { content: " *"; color: var(--error-color); }
-.invalid-feedback { color: var(--error-color); font-size: 0.85em; }
+.form-label.required::after {
+    content: " *";
+    color: var(--ctp-red);
+}
 
 /* ========================================================= */
-/* 4. DASHBOARD & NAVBAR (welcome.html)                      */
+/* 4. DASHBOARD & NAVBAR                                     */
 /* ========================================================= */
 
 .navbar-custom {
     background-color: var(--card-bg);
+    /* En dark es Mantle */
     border-bottom: 1px solid var(--border-color);
-    padding: 0.75rem 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    padding: 1rem 1.5rem;
 }
 
 .navbar-brand {
     font-weight: 800;
-    color: var(--text-color) !important; /* Siempre visible */
-    font-size: 1.25rem;
-}
-
-.navbar-logo {
-    height: 40px;
-    width: auto;
-    margin-right: 10px;
-    border-radius: 6px;
-}
-
-.user-profile-text {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-right: 1rem;
+    color: var(--primary-color) !important;
+    letter-spacing: -0.5px;
 }
 
 .dashboard-container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding: 3rem 1rem;
 }
 
-/* Encabezado de Bienvenida */
-.welcome-header {
-    margin-bottom: 2rem;
-    text-align: left;
+/* Header Bienvenida */
+.welcome-header h1 {
+    color: var(--text-color);
+    font-weight: 900;
 }
-.welcome-header h1,
-.welcome-header h2,
-.welcome-header span {
-    font-weight: 800;
-    color: var(--text-color) !important; /* Fix blanco sobre blanco */
-}
+
 .welcome-header p {
-    color: var(--text-muted) !important;
+    color: var(--text-muted);
+    font-size: 1.1rem;
 }
 
-/* Grid de Tarjetas Dashboard */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
+/* Grid Cards */
 .dash-card {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 2rem;
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
     text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    cursor: pointer;
-    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
 }
 
 .dash-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border-color: var(--adwaita-blue);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+    background-color: var(--card-bg);
+    /* Mantiene color base */
 }
 
+/* Iconos */
 .dash-icon {
-    font-size: 3rem;
+    font-size: 3.5rem;
     margin-bottom: 1rem;
-    color: var(--adwaita-blue);
+    color: var(--primary-color);
+    opacity: 0.9;
+    transition: transform 0.3s ease;
+}
+
+.dash-card:hover .dash-icon {
+    transform: scale(1.1);
+    opacity: 1;
 }
 
 .dash-title {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-color);
     margin-bottom: 0.5rem;
 }
 
 .dash-desc {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--text-muted);
-    line-height: 1.4;
 }

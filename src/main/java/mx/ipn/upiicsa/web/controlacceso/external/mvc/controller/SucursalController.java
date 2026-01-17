@@ -14,6 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * Controlador MVC para administrar sucursales.
+ * Permite listar, agregar (con geolocalización) y eliminar sucursales.
+ * Mapea a la ruta "/sucursales".
+ *
+ */
 @Controller
 @RequestMapping("/sucursales")
 public class SucursalController {
@@ -24,27 +30,44 @@ public class SucursalController {
     @Autowired
     private EstablecimientoRepository establecimientoRepo; // Para asignar el negocio padre
 
-    // 1. EL HUB: Lista de Sucursales
+    /**
+     * Lista todas las sucursales existentes.
+     *
+     * @param model Modelo de la vista.
+     * @return Vista "sucursales/lista".
+     */
     @GetMapping
     public String listarSucursales(Model model) {
         model.addAttribute("sucursales", sucursalRepo.findAll());
         return "sucursales/lista";
     }
 
-    // 2. Formulario de Alta
+    /**
+     * Muestra el formulario para dar de alta una nueva sucursal.
+     *
+     * @param model Modelo para el DTO.
+     * @return Vista "sucursales/alta".
+     */
     @GetMapping("/alta")
     public String mostrarFormAlta(Model model) {
         model.addAttribute("sucursalDto", new AltaSucursalDto());
         return "sucursales/alta";
     }
 
-    // 3. Guardar Nueva Sucursal
+    /**
+     * Guarda una nueva sucursal.
+     * Convierte las coordenadas a un tipo geométrico {@link Point} de PostGIS (SRID
+     * 4326).
+     *
+     * @param dto DTO con datos de la sucursal y ubicación.
+     * @param ra  Atributos flash.
+     * @return Redirección a la lista de sucursales.
+     */
     @PostMapping("/guardar")
     public String guardarSucursal(@ModelAttribute AltaSucursalDto dto, RedirectAttributes ra) {
         try {
             Sucursal sucursal = new Sucursal();
             sucursal.setNombre(dto.getNombre());
-
 
             Establecimiento est = establecimientoRepo.findById(1).orElseThrow();
             sucursal.setEstablecimiento(est);
@@ -66,7 +89,14 @@ public class SucursalController {
         return "redirect:/sucursales";
     }
 
-    // 4. Eliminar
+    /**
+     * Elimina una sucursal por su ID.
+     * Maneja excepciones de integridad referencial.
+     *
+     * @param id ID de la sucursal a eliminar.
+     * @param ra Atributos flash.
+     * @return Redirección a la lista de sucursales.
+     */
     @PostMapping("/eliminar")
     public String eliminarSucursal(@RequestParam Integer id, RedirectAttributes ra) {
         try {

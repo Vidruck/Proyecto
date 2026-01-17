@@ -5,11 +5,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * DTO para el formulario de agendar una nueva cita.
+ * Contiene los identificadores de servicio, empleado y fecha/hora seleccionada.
+ *
+ */
 @Data
 public class AgendarCitaDto {
     private Integer idServicio;
 
-    // @DateTimeFormat es vital para que Spring entienda el input type="date" del HTML
+    // @DateTimeFormat es vital para que Spring entienda el input type="date" del
+    // HTML
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fecha;
 

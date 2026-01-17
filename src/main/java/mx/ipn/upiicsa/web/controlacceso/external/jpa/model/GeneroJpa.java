@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,6 +12,12 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "cca01_genero")
+/**
+ * Entidad JPA que representa el catálogo de géneros de personas (Masculino,
+ * Femenino, etc.).
+ * Mapea a la tabla "cca01_genero".
+ *
+ */
 public class GeneroJpa {
     @Id
     @Column(name = "id_genero")

@@ -7,8 +7,13 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * Entidad que representa una cita agendada en el sistema.
+ * Contiene información sobre el servicio, cliente (persona), empleado,
+ * lista de precios aplicada y estatus de pago.
+ */
 @Entity
-@Table(name = "tci05_cita" )
+@Table(name = "tci05_cita")
 public class Cita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

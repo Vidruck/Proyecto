@@ -1,4 +1,5 @@
 package mx.ipn.upiicsa.web.controlacceso.internal.bs.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -7,6 +8,10 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * Entidad que representa un bloque de horario ocupado por una cita.
+ * Mantiene la relación entre la cita, la sucursal y el rango de tiempo.
+ */
 @Entity
 @Table(name = "tce07_bloque_cita")
 public class BloqueCita {

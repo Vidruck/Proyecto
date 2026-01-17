@@ -8,6 +8,10 @@ import mx.ipn.upiicsa.web.controlacceso.internal.bs.entity.pk.ServicioListaPreci
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * Entidad asociativa que define el precio de un servicio específico
+ * dentro de una lista de precios determinada.
+ */
 @Entity
 @Table(name = "tci02_servicio_lista_precio")
 public class ServicioListaPrecio {

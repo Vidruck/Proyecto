@@ -13,45 +13,52 @@ import java.time.LocalDate;
 @Getter
 @Entity
 @Table(name = "tca01_persona")
+/**
+ * Entidad JPA que representa la información personal de un individuo en el
+ * sistema.
+ * Mapea a la tabla "tca01_persona".
+ * Contiene datos demográficos y relaciones con Género y Usuario.
+ *
+ */
 public class PersonaJpa {
   @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_persona")
-    private Integer id;
-    @Column(name = "fk_id_genero")
-    private Integer idGenero;
-    @Column(name = "tx_nombre")
-    private String nombre;
-    @Column(name = "tx_primer_apellido")
-    private String primerApellido;
-    @Column(name = "tx_segundo_apellido")
-    private String segundoApellido;
-    @Column(name = "fh_nacimiento")
-    private LocalDate fechaNacimiento;
-    @ManyToOne
-    @JoinColumn(name = "fk_id_genero", referencedColumnName = "id_genero", insertable = false, updatable = false)
-    private GeneroJpa genero;
-    @OneToOne(mappedBy = "persona")
-    private UsuarioJpa usuario;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id_persona")
+  private Integer id;
+  @Column(name = "fk_id_genero")
+  private Integer idGenero;
+  @Column(name = "tx_nombre")
+  private String nombre;
+  @Column(name = "tx_primer_apellido")
+  private String primerApellido;
+  @Column(name = "tx_segundo_apellido")
+  private String segundoApellido;
+  @Column(name = "fh_nacimiento")
+  private LocalDate fechaNacimiento;
+  @ManyToOne
+  @JoinColumn(name = "fk_id_genero", referencedColumnName = "id_genero", insertable = false, updatable = false)
+  private GeneroJpa genero;
+  @OneToOne(mappedBy = "persona")
+  private UsuarioJpa usuario;
 
-    public Persona toEntity() {
-        return Persona.builder()
-                .id(this.id)
-                .idGenero(this.idGenero)
-                .nombre(this.nombre)
-                .primerApellido(this.primerApellido)
-                .segundoApellido(this.segundoApellido)
-                .build();
-    }
+  public Persona toEntity() {
+    return Persona.builder()
+        .id(this.id)
+        .idGenero(this.idGenero)
+        .nombre(this.nombre)
+        .primerApellido(this.primerApellido)
+        .segundoApellido(this.segundoApellido)
+        .build();
+  }
 
-    public static PersonaJpa fromEntity(Persona persona) {
-        return PersonaJpa.builder()
-                .id(persona.getId())
-                .idGenero(persona.getIdGenero())
-                .nombre(persona.getNombre())
-                .primerApellido(persona.getPrimerApellido())
-                .segundoApellido(persona.getSegundoApellido())
-                .fechaNacimiento(persona.getFechaNacimiento())
-                .build();
-    }
+  public static PersonaJpa fromEntity(Persona persona) {
+    return PersonaJpa.builder()
+        .id(persona.getId())
+        .idGenero(persona.getIdGenero())
+        .nombre(persona.getNombre())
+        .primerApellido(persona.getPrimerApellido())
+        .segundoApellido(persona.getSegundoApellido())
+        .fechaNacimiento(persona.getFechaNacimiento())
+        .build();
+  }
 }

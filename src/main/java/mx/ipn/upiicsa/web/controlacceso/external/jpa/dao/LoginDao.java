@@ -16,6 +16,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * DAO (Data Access Object) que implementa la lógica de acceso a datos para el
+ * módulo de Login.
+ * Implementa la interfaz {@link LoginRepository} de la capa interna.
+ * Encapsula consultas complejas y la conversión entre entidades JPA y de
+ * Dominio.
+ *
+ */
 @Repository
 public class LoginDao implements LoginRepository {
     @Autowired
@@ -24,10 +32,19 @@ public class LoginDao implements LoginRepository {
     private PersonaJpaRepository personaJpaRepository;
     @Autowired
     private GeneroJpaRepository generoJpaRepository;
-    
+
+    /**
+     * Busca una persona y su usuario asociado mediante login y password.
+     * Realiza la conversión de {@link UsuarioJpa} a {@link Persona}.
+     *
+     * @param login    Nombre de usuario.
+     * @param password Contraseña.
+     * @return Optional con la entidad Persona si se encuentran credenciales
+     *         válidas.
+     */
     public Optional<Persona> findByLoginAndPassword(String login, String password) {
         var resultado = usuarioJpaRepository.findByLoginAndPassword(login, password);
-        if(resultado.isPresent()) {
+        if (resultado.isPresent()) {
             var usuarioJpa = resultado.get();
             var persona = usuarioJpa.getPersona().toEntity();
             persona.setUsuario(usuarioJpa.toEntity());
@@ -46,7 +63,8 @@ public class LoginDao implements LoginRepository {
     public void saveUsuario(Usuario build) {
         usuarioJpaRepository.save(UsuarioJpa.fromEntity(build));
     }
- @Override
+
+    @Override
     public List<Genero> findAllGeneros() {
         return generoJpaRepository.findAll().stream()
                 .map(jpa -> Genero.builder()

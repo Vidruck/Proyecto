@@ -7,6 +7,11 @@ import java.time.LocalDate;
 @Builder
 @Setter
 @Getter
+/**
+ * POJO utilizado para la transferencia de datos durante el registro o inicio de
+ * sesión.
+ * No es una entidad persistente.
+ */
 public class Signin {
     private Integer idGenero;
     private String nombre;

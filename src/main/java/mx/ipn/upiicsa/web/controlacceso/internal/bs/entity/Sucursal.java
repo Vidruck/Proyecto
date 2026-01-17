@@ -8,6 +8,11 @@ import org.locationtech.jts.geom.Point;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * Entidad que representa una sucursal física del establecimiento.
+ * Contiene información de ubicación y relación con el establecimiento
+ * principal.
+ */
 @Entity
 @Table(name = "tce02_sucursal")
 public class Sucursal {

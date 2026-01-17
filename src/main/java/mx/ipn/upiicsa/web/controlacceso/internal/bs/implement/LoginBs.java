@@ -1,4 +1,5 @@
 package mx.ipn.upiicsa.web.controlacceso.internal.bs.implement;
+
 import io.vavr.control.Either;
 import lombok.extern.slf4j.Slf4j;
 import mx.ipn.upiicsa.web.controlacceso.external.mvc.dto.LoginDto;
@@ -16,6 +17,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
 
+/**
+ * Implementación de la lógica de negocio para autenticación y registro.
+ * Maneja el hasheo de contraseñas y la orquestación entre repositorios de
+ * usuarios y personas.
+ */
 @Slf4j
 @Service
 public class LoginBs implements LoginService {
@@ -26,17 +32,18 @@ public class LoginBs implements LoginService {
 
     @Override
     public Either<Integer, Persona> login(LoginDto loginDto) {
-        // 1. Encriptamos la contraseña que viene del formulario ANTES de buscar en la BD
+        // 1. Encriptamos la contraseña que viene del formulario ANTES de buscar en la
+        // BD
         String passwordHash = encriptarPassword(loginDto.getPassword());
 
-        // 2. Se  busca usando el hash, no el texto plano
+        // 2. Se busca usando el hash, no el texto plano
         var resultadoLogin = loginRepository.findByLoginAndPassword(loginDto.getUsername(), passwordHash);
 
         Either<Integer, Persona> resultado;
-        if(resultadoLogin.isPresent()) {
+        if (resultadoLogin.isPresent()) {
             var persona = resultadoLogin.get();
             log.info("El usuario {} se autenticó exitosamente", loginDto.getUsername());
-            if(!persona.getUsuario().getActivo()) {
+            if (!persona.getUsuario().getActivo()) {
                 resultado = Either.left(2);
             } else {
                 resultado = Either.right(persona);
@@ -59,7 +66,6 @@ public class LoginBs implements LoginService {
                 .fechaNacimiento(signin.getFechaNacimiento())
                 .build());
         // --- INICIO DE LA TRAMPA DE DEBUG ---
-
 
         // 3. Encriptamos la contraseña ANTES de guardarla en la BD
         String passwordHash = encriptarPassword(signin.getPassword());
@@ -87,7 +93,8 @@ public class LoginBs implements LoginService {
 
     // --- MÉTODO PRIVADO PARA ENCRIPTAR (SHA-512 + Base64) ---
     private String encriptarPassword(String passwordPlano) {
-        if (passwordPlano == null) return null;
+        if (passwordPlano == null)
+            return null;
         try {
             // Algoritmo SHA-512
             MessageDigest digest = MessageDigest.getInstance("SHA-512");

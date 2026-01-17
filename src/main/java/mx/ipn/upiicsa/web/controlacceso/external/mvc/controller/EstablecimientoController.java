@@ -18,6 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * Controlador MVC para gestionar establecimientos (Negocios).
+ * Permite dar de alta un establecimiento junto con su primera sucursal.
+ * Mapea a la ruta "/establecimientos".
+ *
+ */
 @Controller
 @RequestMapping("/establecimientos")
 public class EstablecimientoController {
@@ -30,12 +36,26 @@ public class EstablecimientoController {
     // Factoría JTS para crear puntos con SRID 4326 (WGS84)
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
+    /**
+     * Muestra el formulario de alta de establecimiento.
+     *
+     * @param model Modelo para el DTO.
+     * @return Vista "alta".
+     */
     @GetMapping("/alta")
     public String mostrarAlta(Model model) {
         model.addAttribute("sucursalDto", new AltaSucursalDto());
         return "alta";
     }
 
+    /**
+     * Guarda un nuevo establecimiento y su sucursal principal.
+     * Convierte las coordenadas latitud/longitud a un punto geométrico JTS.
+     *
+     * @param dto           DTO con datos del negocio y ubicación.
+     * @param redirectAttrs Atributos para mensajes flash.
+     * @return Redirección a la vista de alta.
+     */
     @PostMapping("/guardar")
     public String guardar(@ModelAttribute AltaSucursalDto dto, RedirectAttributes redirectAttrs) {
         // 1. Crear Establecimiento

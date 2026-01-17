@@ -11,8 +11,12 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * Entidad que gestiona las credenciales de acceso al sistema.
+ * Vincula un login y password con un rol y estado activo.
+ */
 @Entity
-@Table(name="tca02_usuario")
+@Table(name = "tca02_usuario")
 public class Usuario {
 
     @Id

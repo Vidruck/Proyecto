@@ -12,6 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * Controlador MVC para gestionar los servicios (paquetes) ofrecidos por la
+ * barbería.
+ * Permite listar, agregar nuevos servicios y cambiar su estado
+ * (activar/desactivar).
+ * Mapea a la ruta "/servicios".
+ *
+ */
 @Controller
 @RequestMapping("/servicios")
 public class ServicioController {
@@ -22,14 +30,24 @@ public class ServicioController {
     @Autowired
     private ServicioListaPrecioRepository precioRepo;
 
-    // 1. EL HUB: Lista de Servicios (Índice)
+    /**
+     * Lista todos los servicios registrados.
+     *
+     * @param model Modelo de la vista.
+     * @return Vista "servicios/lista".
+     */
     @GetMapping
     public String listarServicios(Model model) {
         model.addAttribute("servicios", servicioRepo.findAll());
         return "servicios/lista";
     }
 
-    // 2. Formulario de Alta
+    /**
+     * Muestra el formulario para dar de alta un nuevo servicio.
+     *
+     * @param model Modelo para el DTO.
+     * @return Vista "servicios/alta".
+     */
     @GetMapping("/alta")
     public String mostrarFormAlta(Model model) {
         // Enviamos un objeto servicio vacío y un precio en 0
@@ -38,12 +56,19 @@ public class ServicioController {
         return "servicios/alta";
     }
 
-    // 3. Guardar Nuevo Servicio
-    // Recibimos los campos sueltos o el objeto Servicio para evitar errores con DTOs internos
+    /**
+     * Guarda un nuevo servicio y su precio inicial.
+     * El servicio nace activo por defecto (1).
+     *
+     * @param servicio    Entidad Servicio con datos básicos.
+     * @param precioInput Precio inicial del servicio.
+     * @param ra          Atributos flash para mensajes.
+     * @return Redirección a la lista de servicios.
+     */
     @PostMapping("/guardar")
     public String guardarServicio(@ModelAttribute Servicio servicio,
-                                  @RequestParam("precio") Integer precioInput,
-                                  RedirectAttributes ra) {
+            @RequestParam("precio") Integer precioInput,
+            RedirectAttributes ra) {
 
         // A. Guardar Servicio Base
         servicio.setActivo(1); // Nace activo
@@ -65,7 +90,13 @@ public class ServicioController {
         return "redirect:/servicios"; // Regresa a la LISTA
     }
 
-    // 4. Activar/Desactivar
+    /**
+     * Cambia el estado de un servicio (Soft Delete / Toggle).
+     *
+     * @param id ID del servicio a modificar.
+     * @param ra Atributos flash.
+     * @return Redirección a la lista de servicios.
+     */
     @PostMapping("/cambiar-estado")
     public String cambiarEstado(@RequestParam Integer id, RedirectAttributes ra) {
         servicioRepo.findById(id).ifPresent(s -> {

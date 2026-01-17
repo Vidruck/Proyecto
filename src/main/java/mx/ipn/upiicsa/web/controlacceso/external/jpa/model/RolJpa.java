@@ -6,6 +6,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "cca02_rol")
+/**
+ * Entidad JPA que representa el catálogo de roles de usuario (ej.
+ * Administrador, Cliente, Empleado).
+ * Mapea a la tabla "cca02_rol".
+ *
+ */
 public class RolJpa {
     @Id
     @Column(name = "id_rol")

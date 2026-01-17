@@ -8,12 +8,16 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * Entidad base que representa a una persona física en el sistema.
+ * Contiene datos personales generales como nombre, fecha de nacimiento, etc.
+ */
 @Entity
 @Table(name = "tca01_persona")
 public class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_persona")   // <--- Mapeo exacto a la BD
+    @Column(name = "id_persona") // <--- Mapeo exacto a la BD
     private Integer id;
 
     @Column(name = "fk_id_genero") // <--- Mapeo exacto
@@ -34,10 +38,13 @@ public class Persona {
     // Marcamos como Transient para evitar errores circulares por ahora,
     // o definimos la relación inversa si Usuario (Internal) también es Entity.
     // Dado que Usuario tiene @Table("tca02_usuario"), Hibernate podría confundirse
-    // si no lo mapeamos explícitamente. Lo más seguro para romper el ciclo ahora es @Transient
+    // si no lo mapeamos explícitamente. Lo más seguro para romper el ciclo ahora es
+    // @Transient
     // o @OneToOne(mappedBy = "persona") si Usuario tiene la referencia.
-    // Revisando tu código, Usuario NO tiene referencia directa a Persona en su versión internal,
-    // así que lo mejor es @Transient para que Hibernate ignore este campo y no rompa.
+    // Revisando tu código, Usuario NO tiene referencia directa a Persona en su
+    // versión internal,
+    // así que lo mejor es @Transient para que Hibernate ignore este campo y no
+    // rompa.
     @Transient
     private Usuario usuario;
 }

@@ -19,6 +19,11 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementación de la lógica de negocio para la gestión de citas.
+ * Se encarga de calcular horarios disponibles, asignar empleados y persistir
+ * las citas.
+ */
 @Service
 @Transactional
 public class CitaBs implements CitaService {
@@ -39,13 +44,14 @@ public class CitaBs implements CitaService {
      * Calcula los horarios libres restando los bloques ocupados al horario laboral.
      */
     @Override
-    public List<LocalTime> obtenerHorariosDisponibles(LocalDate fecha, Integer idServicio, Integer idEmpleadoPreferido) {
+    public List<LocalTime> obtenerHorariosDisponibles(LocalDate fecha, Integer idServicio,
+            Integer idEmpleadoPreferido) {
         var servicio = servicioRepo.findById(idServicio).orElseThrow();
         int duracion = servicio.getDuracion();
 
         List<LocalTime> horarios = new ArrayList<>();
         LocalTime inicioDia = LocalTime.of(9, 0); // Abre a las 9:00 AM
-        LocalTime finDia = LocalTime.of(18, 0);   // Cierra a las 6:00 PM
+        LocalTime finDia = LocalTime.of(18, 0); // Cierra a las 6:00 PM
         LocalDateTime inicioRango = fecha.atTime(inicioDia);
         LocalDateTime finRango = fecha.atTime(finDia);
 
